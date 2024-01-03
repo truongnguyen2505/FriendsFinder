@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#70000000"
+    android:gravity="center"
+    android:padding="30dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_dialog_border">
+
+        <com.tcom.vn.customview.CustomTextViewFonts
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="@color/color_input_light"
+            android:textSize="16sp"
+            app:font_type="@string/Roboto_Bold"
+            tool:text="Có lỗi xảy ra" />
+
+        <com.tcom.vn.customview.CustomTextViewFonts
+            android:id="@+id/tvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitle"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:gravity="center_horizontal"
+            android:textAlignment="center"
+            android:textColor="@color/color_text_light"
+            android:textSize="14sp"
+            app:font_type="@string/Roboto_Regular"
+            tool:text="Đã xảy ra lỗi. Chúng tôi vui lòng thông báo đến bạn. Mong bạn hiểu và thử lại vào thời điểm khác" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/tvMessage"
+            android:background="@color/color_border_light" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view"
+            android:orientation="horizontal">
+
+            <com.tcom.vn.customview.CustomTextViewFonts
+                android:id="@+id/btnCancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/str_cancel"
+                android:textColor="@color/color_input_light"
+                android:textSize="16sp"
+                app:font_type="@string/Roboto_Regular" />
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_border_light" />
+
+            <com.tcom.vn.customview.CustomTextViewFonts
+                android:id="@+id/btnOK"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:text="@string/str_ok"
+                android:textColor="@color/color_btn_blue"
+                android:textSize="16sp"
+                app:font_type="@string/Roboto_Bold" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

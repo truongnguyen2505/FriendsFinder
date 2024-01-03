@@ -1,0 +1,58 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.Base" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="backgroundColor">@color/color_main_bg</item>
+        <item name="android:windowBackground">@color/color_main_bg</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/white</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="CustomDialogTheme" parent="@style/Dialog_Theme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Dialog_Theme" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowEnterAnimation">@anim/anim_fade_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_fade_out</item>
+    </style>
+
+    <style name="CustomDialogBottom" parent="@style/Dialog_Bottom">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Dialog_Bottom" parent="@android:style/Theme.Translucent.NoTitleBar">
+        <item name="android:windowEnterAnimation">@anim/no_anim</item>
+        <item name="android:windowExitAnimation">@anim/no_anim</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Text.Regular" parent="Widget.AppCompat.TextView">
+        <item name="font_type">@string/Roboto_Regular</item>
+    </style>
+
+    <style name="Text.Bold" parent="Widget.AppCompat.TextView">
+        <item name="font_type">@string/Roboto_Bold</item>
+    </style>
+
+    <style name="Text.SemiBold" parent="Widget.AppCompat.TextView">
+        <item name="font_type">@string/Roboto_Semi_bold</item>
+    </style>
+
+    <style name="Text.Medium" parent="Widget.AppCompat.TextView">
+        <item name="font_type">@string/Roboto_Medium</item>
+    </style>
+
+    <style name="Text.Italic" parent="Widget.AppCompat.TextView">
+        <item name="font_type">@string/Roboto_Italic</item>
+    </style>
+
+    <style name="Text.Light" parent="Widget.AppCompat.TextView">
+        <item name="font_type">@string/Roboto_Light</item>
+    </style>
+
+    <style name="Text.LightItalic" parent="Widget.AppCompat.TextView">
+        <item name="font_type">@string/Roboto_LightItalic</item>
+    </style>
+</resources>

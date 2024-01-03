@@ -1,0 +1,130 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.finals.friendsfinder"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0.0"
+
+    }
+
+    flavorDimensions "version"
+    productFlavors {
+        dev {
+            dimension "version"
+
+            buildConfigField "String", "BASE_URL_API", "\"\""
+            buildConfigField "String", "BASE_URL_CHAT", "\"\""
+            buildConfigField "String", "BASE_URL_SOCKET", "\"\""
+
+        }
+        staging {
+            dimension "version"
+
+            buildConfigField "String", "BASE_URL_API", "\"\""
+            buildConfigField "String", "BASE_URL_CHAT", "\"\""
+            buildConfigField "String", "BASE_URL_SOCKET", "\"\""
+
+        }
+        full {
+            dimension "version"
+
+            buildConfigField "String", "BASE_URL_API", "\"\""
+            buildConfigField "String", "BASE_URL_CHAT", "\"\""
+            buildConfigField "String", "BASE_URL_SOCKET", "\"\""
+
+        }
+    }
+
+    buildFeatures {
+        dataBinding true
+        viewBinding true
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
+        // add the code from below line.
+        applicationVariants.all {
+                // this method is use to rename your all apk weather
+                // it may be signed or unsigned(debug apk)
+            variant ->
+                variant.outputs.each {
+                        // on below line we are setting a name to our apk
+                    output ->
+                        // on below line we are specifying our app name.
+                        project.ext { appName = "Base-(${variant.versionName})" }
+                        // on below line we are adding the formatted date to our apk file name.
+                        def formattedDate = new Date().format('yyyy-MM-dd-HH-mm-ss')
+                        // on below line we are creating a new name for our apk.
+                        def newName = output.outputFile.name
+                        // on below line we are replacing our previous name with our app name.
+                        newName = newName.replace("app-", "$project.ext.appName-")
+                        // on below line we are replacing -debug with our formatted date.
+                        newName = newName.replace("-debug", "-debug-" + formattedDate)
+                        // at last we are setting our apk name to it.
+                        output.outputFileName = newName
+                }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    sourceSets {
+        main {
+            res {
+                srcDirs 'src/main/res', 'src/main/res/layout/fragments', 'src/main/res/layout/activities', 'src/main/res/layout/dialogs', 'src/main/res/layout/cells'
+            }
+        }
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.6.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+
+    implementation 'com.github.bumptech.glide:glide:4.13.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
+    implementation project(path: ':compressor')
+    implementation project(path: ':utilcode')
+    kapt 'com.github.bumptech.glide:compiler:4.13.0'
+
+    //event bus
+    implementation 'org.greenrobot:eventbus:3.3.1'
+
+    /*For retrofit request data from internet*/
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "io.reactivex.rxjava2:rxjava:2.2.19"
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.8.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.8.1'
+
+}

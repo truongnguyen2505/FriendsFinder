@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparency">
+
+    <View
+        android:id="@+id/viewDimmer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_bg_dialog"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:id="@+id/layoutMain"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_menu_bar"
+        android:visibility="visible">
+
+        <com.tcom.vn.customview.CustomTextViewFonts
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="14dp"
+            android:text="@string/str_choose_image"
+            android:textColor="@color/color_input_light"
+            android:textSize="20sp"
+            app:font_type="@string/Roboto_Bold" />
+
+        <com.tcom.vn.customview.CustomTextViewFonts
+            android:id="@+id/txtFromCamera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitle"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="24dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/str_capture_image"
+            android:textColor="@color/color_input_light"
+            android:textSize="16sp"
+            app:font_type="@string/Roboto_Medium" />
+
+        <com.tcom.vn.customview.CustomTextViewFonts
+            android:id="@+id/txtFromGalery"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtFromCamera"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="14dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/str_pick_from_gallery"
+            android:textColor="@color/color_input_light"
+            android:textSize="16sp"
+            app:font_type="@string/Roboto_Medium" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_below="@id/txtFromGalery"
+            android:background="@color/color_border_light" />
+
+        <com.tcom.vn.customview.CustomTextViewFonts
+            android:id="@+id/btnCancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:text="@string/str_cancel"
+            android:textColor="@color/color_error"
+            android:textSize="18sp"
+            app:font_type="@string/Roboto_Bold" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

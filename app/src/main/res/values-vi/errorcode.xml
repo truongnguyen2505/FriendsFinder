@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ERR_0000">Something went wrong (0000)</string>
+    <string name="ERR_0000_description">Please provide this Error code with your Device ID to RICE\'s Customer Support to get the fastest aid.(Device ID:%s)</string>
+
+</resources>

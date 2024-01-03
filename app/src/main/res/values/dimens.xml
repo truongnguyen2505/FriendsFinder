@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="laser_height">3dp</dimen>
+    <dimen name="radius_mask">15dp</dimen>
+    <dimen name="radius_finder">35dp</dimen>
+    <dimen name="main_padding_vertical">10dp</dimen>
+    <dimen name="main_padding_horizontal">24dp</dimen>
+</resources>

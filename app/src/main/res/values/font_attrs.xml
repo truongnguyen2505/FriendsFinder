@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="CustomTextView">
+        <attr name="font_type" format="string" />
+    </declare-styleable>
+
+    <string name="Roboto_Bold" translatable="false">fonts/Roboto-Bold.ttf</string>
+    <string name="Roboto_Italic" translatable="false">fonts/Roboto-Italic.ttf</string>
+    <string name="Roboto_Light" translatable="false">fonts/Roboto-Light.ttf</string>
+    <string name="Roboto_LightItalic" translatable="false">fonts/Roboto-LightItalic.ttf</string>
+    <string name="Roboto_Medium" translatable="false">fonts/Roboto-Medium.ttf</string>
+    <string name="Roboto_Regular" translatable="false">fonts/Roboto-Regular.ttf</string>
+    <string name="Roboto_Thin" translatable="false">fonts/Roboto-Thin.ttf</string>
+    <string name="Roboto_ThinItalic" translatable="false">fonts/Roboto-ThinItalic.ttf</string>
+    <string name="Roboto_Semi_bold" translatable="false">fonts/roboto-mono-semi-bold.ttf</string>
+
+
+</resources>

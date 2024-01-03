@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="str_cancel">Hủy bỏ</string>
+    <string name="str_ok">OK</string>
+    <string name="str_choose_image">Lựa chọn hình ảnh</string>
+    <string name="str_capture_image">Chụp ảnh</string>
+    <string name="str_pick_from_gallery">Chọn từ thư viện</string>
+
+    <string name="str_error_occurs">Có lỗi xảy ra. Vui lòng kiểm tra lại.</string>
+    <string name="str_error_not_found_server">Không tìm thấy máy chủ.</string>
+
+</resources>
