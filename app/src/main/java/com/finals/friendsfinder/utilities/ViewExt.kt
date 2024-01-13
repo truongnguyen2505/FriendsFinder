@@ -2,6 +2,7 @@ package com.finals.friendsfinder.utilities
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.os.SystemClock
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Animation.AnimationListener
@@ -202,4 +203,15 @@ fun View.showKeyboard(andRequestFocus: Boolean = false) {
     }
     val imm = context?.getSystemService<InputMethodManager>()
     imm?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+}
+
+private var mLastClickTime: Long = 0
+fun View.clickWithDebounce(debounceTime: Long = 300L, action: () -> Unit) {
+    this.setOnClickListener {
+        if (SystemClock.elapsedRealtime() - mLastClickTime < debounceTime) {
+            return@setOnClickListener
+        }
+        action()
+        mLastClickTime = SystemClock.elapsedRealtime()
+    }
 }

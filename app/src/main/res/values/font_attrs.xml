@@ -5,6 +5,13 @@
         <attr name="font_type" format="string" />
     </declare-styleable>
 
+    <declare-styleable name="CustomEditText">
+        <attr name="label" format="string"/>
+        <attr name="error" format="string"/>
+        <attr name="editTextHeight" format="float"/>
+        <attr name="titleVisible" format="string"/>
+    </declare-styleable>
+
     <string name="Roboto_Bold" translatable="false">fonts/Roboto-Bold.ttf</string>
     <string name="Roboto_Italic" translatable="false">fonts/Roboto-Italic.ttf</string>
     <string name="Roboto_Light" translatable="false">fonts/Roboto-Light.ttf</string>
