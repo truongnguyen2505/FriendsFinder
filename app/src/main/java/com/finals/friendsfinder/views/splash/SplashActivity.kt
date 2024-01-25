@@ -12,7 +12,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     override fun setupView() {
         super.setupView()
-        showActivity<LoginActivity>(goRoot = true)
+        showActivity<MainActivity>(goRoot = true)
     }
 
     override fun observeHandle() {

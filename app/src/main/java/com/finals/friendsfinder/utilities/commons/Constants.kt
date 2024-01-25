@@ -1,7 +1,9 @@
 package com.finals.friendsfinder.utilities.commons
 
+import android.Manifest
 import android.content.Context
 import android.content.res.Configuration
+import android.os.Build
 import com.finals.friendsfinder.R
 import com.finals.friendsfinder.models.BaseAccessToken
 import com.finals.friendsfinder.utilities.commons.Constants.Companion.isLockShowPopup
@@ -15,6 +17,10 @@ class Constants {
 
         const val DEFAULT_FONT: String = "fonts/Roboto-Regular.ttf"
         const val PAGE_LIMIT: Int = 20
+        val LOCATION_PER = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
 
         fun isTablet(context: Context): Boolean {
             return context.resources
