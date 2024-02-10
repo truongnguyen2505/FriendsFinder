@@ -47,3 +47,9 @@ fun logout() {
     BaseAccessToken.accessToken = ""
     BaseAccessToken.refreshToken = ""
 }
+
+enum class SignupKey(val key: String) {
+    USERID("userId"),
+    USERNAME("userName"),
+    PROFILE_IMAGE("profileImage")
+}

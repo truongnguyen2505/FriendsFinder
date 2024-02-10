@@ -62,6 +62,16 @@
                 android:layout_marginTop="24dp"
                 android:text="LOGIN" />
 
+            <com.tcom.vn.customview.CustomTextViewFonts
+                android:id="@+id/btnSignup"
+                style="@style/StyleButtonOrange"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+                android:layout_marginTop="24dp"
+                android:text="SIGNUP" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
