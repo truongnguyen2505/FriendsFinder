@@ -19,7 +19,7 @@
         android:layout_marginStart="2dp"
         android:src="@drawable/ic_arrow_back_24" />
 
-    <com.tcom.vn.customview.CustomTextViewFonts
+    <com.finals.friendsfinder.customizes.CustomTextViewFonts
         android:id="@+id/tvMessage"
         style="@style/TextBlack14Bold"
         android:layout_width="wrap_content"

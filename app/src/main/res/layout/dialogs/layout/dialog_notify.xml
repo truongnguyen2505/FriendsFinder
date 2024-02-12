@@ -19,7 +19,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/bg_dialog_border">
 
-        <com.tcom.vn.customview.CustomTextViewFonts
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             app:font_type="@string/Roboto_Bold"
             tool:text="Có lỗi xảy ra" />
 
-        <com.tcom.vn.customview.CustomTextViewFonts
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
             android:id="@+id/tvMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:layout_below="@id/view"
             android:orientation="horizontal">
 
-            <com.tcom.vn.customview.CustomTextViewFonts
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
                 android:id="@+id/btnCancel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                 android:layout_height="match_parent"
                 android:background="@color/color_border_light" />
 
-            <com.tcom.vn.customview.CustomTextViewFonts
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
                 android:id="@+id/btnOK"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

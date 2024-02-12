@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Base MVVM</string>
+    <string name="app_name" translatable="false">Friends Finder</string>
     <string name="str_cancel">Cancel</string>
     <string name="str_ok">OK</string>
     <string name="str_choose_image">Choice Image</string>

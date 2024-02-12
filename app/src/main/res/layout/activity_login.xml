@@ -52,7 +52,7 @@
                 android:id="@+id/edtPass"
                 android:layout_marginTop="16dp"/>
 
-            <com.tcom.vn.customview.CustomTextViewFonts
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
                 android:id="@+id/btnLogin"
                 style="@style/StyleButtonOrange"
                 android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                 android:layout_marginTop="24dp"
                 android:text="LOGIN" />
 
-            <com.tcom.vn.customview.CustomTextViewFonts
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
                 android:id="@+id/btnSignup"
                 style="@style/StyleButtonOrange"
                 android:layout_width="match_parent"

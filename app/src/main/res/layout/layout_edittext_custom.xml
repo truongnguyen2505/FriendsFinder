@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.tcom.vn.customview.CustomTextViewFonts
+    <com.finals.friendsfinder.customizes.CustomTextViewFonts
         android:id="@+id/textLabel"
         style="@style/TextForm14Regular"
         android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
 
     </LinearLayout>
 
-    <com.tcom.vn.customview.CustomTextViewFonts
+    <com.finals.friendsfinder.customizes.CustomTextViewFonts
         android:id="@+id/textError"
         style="@style/TextRed12Regular"
         android:layout_width="wrap_content"

@@ -29,6 +29,17 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
 
     private fun setListener() {
         with(rootView){
+            edtPass.setTypePassWord()
+            edtConfirmPass.setTypePassWord()
+            edtPass.setOnFocusChangeListener { view, b ->
+                if (!b)
+                    edtPass.hideMessageError()
+            }
+            edtPass.onTextChangeCallback = {txt ->
+                if(txt.length < 8)
+                    edtPass.setMessageError("Password must be greater than or equal to 8 characters!")
+                else edtPass.hideMessageError()
+            }
             btnSignUp.clickWithDebounce {
                 checkEmptyToRegister()
             }
@@ -51,6 +62,9 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
             }
             if (pass.isEmpty()){
                 edtPass.setMessageError("Password is not empty!")
+                return
+            }
+            if (pass.length < 8){
                 return
             }
             if (cfPass.isEmpty()){
@@ -86,6 +100,8 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
                         }
                     }
 
+                }else if (it.isComplete){
+                    showMessage("Email has registered!")
                 }
             }
     }

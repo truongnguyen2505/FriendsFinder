@@ -20,7 +20,7 @@
         android:background="@drawable/bg_menu_bar"
         android:visibility="visible">
 
-        <com.tcom.vn.customview.CustomTextViewFonts
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
             android:id="@+id/tvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:textSize="20sp"
             app:font_type="@string/Roboto_Bold" />
 
-        <com.tcom.vn.customview.CustomTextViewFonts
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
             android:id="@+id/txtFromCamera"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -48,7 +48,7 @@
             android:textSize="16sp"
             app:font_type="@string/Roboto_Medium" />
 
-        <com.tcom.vn.customview.CustomTextViewFonts
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
             android:id="@+id/txtFromGalery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
             android:layout_below="@id/txtFromGalery"
             android:background="@color/color_border_light" />
 
-        <com.tcom.vn.customview.CustomTextViewFonts
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
             android:id="@+id/btnCancel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

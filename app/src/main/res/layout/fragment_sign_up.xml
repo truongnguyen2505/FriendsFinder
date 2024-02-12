@@ -56,7 +56,7 @@
         android:layout_marginTop="16dp"/>
 
 
-    <com.tcom.vn.customview.CustomTextViewFonts
+    <com.finals.friendsfinder.customizes.CustomTextViewFonts
         android:id="@+id/btnSignUp"
         style="@style/StyleButtonOrange"
         android:layout_width="match_parent"

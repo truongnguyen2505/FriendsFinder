@@ -3,7 +3,6 @@ package com.finals.friendsfinder.customizes
 import android.annotation.SuppressLint
 import android.content.Context
 import android.text.InputFilter
-import android.text.InputType
 import android.text.Spannable
 import android.text.method.PasswordTransformationMethod
 import android.util.AttributeSet
@@ -17,7 +16,6 @@ import com.finals.friendsfinder.R
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.showKeyboard
 import com.tcom.vn.customview.CustomEditTextFonts
-import com.tcom.vn.customview.CustomTextViewFonts
 
 class CustomEditText : FrameLayout {
     private var edittext: CustomEditTextFonts? = null

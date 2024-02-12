@@ -1,7 +1,7 @@
 package com.finals.friendsfinder.utilities
 
 import androidx.databinding.BindingAdapter
-import com.tcom.vn.customview.CustomTextViewFonts
+import com.finals.friendsfinder.customizes.CustomTextViewFonts
 
 object TextViewExt {
 

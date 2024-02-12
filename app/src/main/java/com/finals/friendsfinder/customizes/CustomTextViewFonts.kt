@@ -1,4 +1,4 @@
-package com.tcom.vn.customview
+package com.finals.friendsfinder.customizes
 
 import android.content.Context
 import android.graphics.Color
@@ -6,7 +6,6 @@ import android.graphics.Typeface
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 import com.finals.friendsfinder.R
-import com.finals.friendsfinder.customizes.FontCache
 import com.finals.friendsfinder.utilities.commons.Constants
 
 
