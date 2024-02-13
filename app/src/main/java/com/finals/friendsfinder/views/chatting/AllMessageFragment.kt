@@ -1,10 +1,12 @@
-package com.finals.friendsfinder.views.friends
+package com.finals.friendsfinder.views.chatting
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentAddFriendsBinding
+import com.finals.friendsfinder.utilities.commons.SignupKey
 import com.finals.friendsfinder.views.friends.adapter.AddFriendsAdapter
 import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.google.firebase.auth.FirebaseAuth
@@ -13,12 +15,13 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
+class AllMessageFragment : BaseFragment<FragmentAddFriendsBinding>() {
+
 
     companion object {
-        fun newInstance(): AddFriendsFragment {
+        fun newInstance(): AllMessageFragment {
             val arg = Bundle()
-            return AddFriendsFragment().apply {
+            return AllMessageFragment().apply {
                 arguments = arg
             }
         }
@@ -37,20 +40,21 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         getListUser()
     }
 
-    private fun getListUser(){
+    private fun getListUser() {
         val firebase = FirebaseAuth.getInstance().currentUser
         val dbReference = FirebaseDatabase.getInstance().getReference("Users")
 
-        dbReference.addValueEventListener(object: ValueEventListener{
+        dbReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 currentListUser?.clear()
-                for (dataSnap: DataSnapshot in snapshot.children){
+                for (dataSnap: DataSnapshot in snapshot.children) {
                     val user = dataSnap.getValue(UserInfo::class.java)
                     //check not me
-                    if (!user?.userId.equals(firebase?.uid)){
+                    if (!user?.userId.equals(firebase?.uid)) {
                         currentListUser?.add(user!!)
                     }
                 }
+                addFriendAdapter?.setList(currentListUser ?: listOf())
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -59,9 +63,12 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
 
         })
     }
-    private fun setAdapter() {
-        addFriendAdapter = AddFriendsAdapter(requireContext(), onClickItem = {
 
+    private fun setAdapter() {
+        addFriendAdapter = AddFriendsAdapter(requireContext(), onClickItem = { userInfo ->
+            val intent = Intent(requireContext(), ChatActivity::class.java)
+            intent.putExtra(SignupKey.USERID.key, userInfo.userId)
+            startActivity(intent)
         })
         rootView.rvListUser.apply {
             layoutManager =

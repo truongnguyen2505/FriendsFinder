@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <com.finals.friendsfinder.customizes.CircleImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="@drawable/ic_eye_show"
+            android:id="@+id/imgAvatar"
+            android:layout_marginVertical="12dp"
+            android:layout_marginStart="12dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imgAvatar"
+            android:layout_marginEnd="12dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content">
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/Text.Medium"
+                android:id="@+id/tvName"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                tools:text="Nguyen Duc Truong"
+                />
+
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                android:id="@+id/tvDesc"
+                style="@style/Text.Regular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_1A1A1A"
+                android:textSize="14sp"
+                tools:text="Nguyen Duc Truong" />
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

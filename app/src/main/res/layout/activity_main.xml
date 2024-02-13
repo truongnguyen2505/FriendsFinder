@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frMain"
-    android:background="@color/white">
+    android:background="@color/black">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
@@ -11,4 +12,100 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="12dp"
+        android:elevation="8dp"
+        android:paddingVertical="20dp"
+        android:background="@drawable/bg_boder_20_bg_white"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/btnHome"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="12dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_selected_black_border"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgHome"
+                app:srcCompat="@drawable/ic_home_white"/>
+
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Text.SemiBold"
+                android:layout_marginStart="4dp"
+                android:id="@+id/tvHome"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:text="Home"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btnChat"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="12dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_unselected_white_border"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgChat"
+                app:srcCompat="@drawable/ic_chat_black"/>
+
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Text.SemiBold"
+                android:id="@+id/tvChat"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="Chat"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/btnProfile"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:paddingVertical="12dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/bg_unselected_white_border"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imgProfile"
+                app:srcCompat="@drawable/ic_user_black"/>
+
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Text.SemiBold"
+                android:layout_marginStart="4dp"
+                android:id="@+id/tvProfile"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:text="Profile"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

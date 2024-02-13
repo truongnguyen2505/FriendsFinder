@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white">
+
+    <include
+        android:id="@+id/layoutHeader"
+        layout="@layout/layout_header"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/RvChatting"
+        tools:listitem="@layout/item_chatting"
+        android:layout_above="@+id/layoutMess"
+        android:layout_below="@+id/layoutHeader"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:id="@+id/layoutMess"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:paddingHorizontal="28dp"
+        android:paddingVertical="16dp">
+
+        <EditText
+            android:id="@+id/edtDescribe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_edt_border_18"
+            android:hint="Input message..."
+            android:paddingVertical="10dp"
+            android:paddingStart="12dp"
+            android:maxLength="250"
+            android:textColor="@color/black"
+            android:textColorHint="@color/color_bg_dialog"
+            android:textSize="14sp"
+            app:font_type="@string/Roboto_Regular" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingStart="12dp"
+            app:srcCompat="@drawable/ic_send_comment" />
+    </LinearLayout>
+
+</RelativeLayout>
