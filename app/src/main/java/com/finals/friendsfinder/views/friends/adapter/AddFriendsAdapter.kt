@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseViewHolder
 import com.finals.friendsfinder.databinding.ItemAddFriendsBinding
 import com.finals.friendsfinder.utilities.clickWithDebounce
@@ -46,7 +47,8 @@ class AddFriendsAdapter(private val context: Context, private val onClickItem: (
             val item = listUser[position]
             with(binding){
                 if (item.imageProfile.isEmpty())
-                    imgAvatar.setImageResource()
+                    imgAvatar.setImageResource(R.drawable.ic_avatar_empty_25)
+                else Glide.with(context).load(item.imageProfile).into(imgAvatar)
                 tvName.text = item.userName
                 layoutItem.clickWithDebounce {
                     onClickItem.invoke(item)

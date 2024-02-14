@@ -10,9 +10,15 @@
     android:focusableInTouchMode="true"
     >
 
+    <include
+        android:id="@+id/layoutHeader"
+        layout="@layout/layout_header"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/layoutHeader"
+        android:layout_marginTop="8dp"
         tools:listitem="@layout/item_add_friends"
         android:id="@+id/rvListUser"/>
 

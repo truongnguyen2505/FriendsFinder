@@ -53,3 +53,9 @@ enum class SignupKey(val key: String) {
     USERNAME("userName"),
     PROFILE_IMAGE("profileImage")
 }
+
+enum class ChatKey(val key: String) {
+    SENDER_ID("senderId"),
+    RECEIVER_ID("receiverId"),
+    MESSAGE("message")
+}

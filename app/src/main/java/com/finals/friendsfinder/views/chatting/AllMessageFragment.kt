@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentAddFriendsBinding
+import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.SignupKey
 import com.finals.friendsfinder.views.friends.adapter.AddFriendsAdapter
 import com.finals.friendsfinder.views.friends.data.UserInfo
@@ -38,6 +39,16 @@ class AllMessageFragment : BaseFragment<FragmentAddFriendsBinding>() {
         super.bindData()
         setAdapter()
         getListUser()
+        setListener()
+    }
+
+    private fun setListener() {
+        with(rootView){
+            layoutHeader.tvMessage.text = "Messengers"
+            layoutHeader.imgBack.clickWithDebounce {
+                activity?.supportFragmentManager?.popBackStack()
+            }
+        }
     }
 
     private fun getListUser() {
@@ -68,6 +79,7 @@ class AllMessageFragment : BaseFragment<FragmentAddFriendsBinding>() {
         addFriendAdapter = AddFriendsAdapter(requireContext(), onClickItem = { userInfo ->
             val intent = Intent(requireContext(), ChatActivity::class.java)
             intent.putExtra(SignupKey.USERID.key, userInfo.userId)
+            intent.putExtra(SignupKey.USERNAME.key, userInfo.userName)
             startActivity(intent)
         })
         rootView.rvListUser.apply {

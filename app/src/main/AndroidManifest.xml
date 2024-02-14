@@ -61,6 +61,11 @@
             android:exported="false"
             android:screenOrientation="portrait"
             />
+        <activity android:name=".views.chatting.ChatActivity"
+            android:configChanges="orientation"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            />
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.finals.friendsfinder.authentication.fileprovider"
