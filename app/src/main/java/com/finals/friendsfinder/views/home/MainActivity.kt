@@ -111,6 +111,38 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
         setButtonSelect()
     }
 
+    override fun showMain() {
+        super.showMain()
+        setHomeButton()
+    }
+
+    private fun setHomeButton() {
+        with(rootView) {
+            mListLinear.forEachIndexed { index, linearLayout ->
+                when (index) {
+                    0 -> {
+                        mListLinear[0].setBackgroundResource(R.drawable.bg_selected_black_border)
+                        mListTV[0].setTextColor(ContextCompat.getColor(this@MainActivity, R.color.white))
+                        mListImg[0].setImageResource(R.drawable.ic_home_white)
+                    }
+                    1->{
+                        mListLinear[1].setBackgroundResource(R.drawable.bg_unselected_white_border)
+                        mListTV[1].setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
+                        mListImg[1].setImageResource(R.drawable.ic_chat_black)
+                    }
+                    2->{
+                        mListLinear[2].setBackgroundResource(R.drawable.bg_unselected_white_border)
+                        mListTV[2].setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
+                        mListImg[2].setImageResource(R.drawable.ic_user_black)
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
+    }
+
     private fun setButtonSelect() {
         with(rootView) {
             mListLinear.forEachIndexed { index, linearLayout ->
@@ -147,11 +179,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
 
                         1 -> {
                             mListImg[1].setImageResource(R.drawable.ic_chat_white)
-                            addFragmentToBackstack(android.R.id.content, AllMessageFragment.newInstance())
+                            addFragmentToBackstack(
+                                android.R.id.content,
+                                AllMessageFragment.newInstance()
+                            )
                         }
 
                         2 -> {
                             mListImg[2].setImageResource(R.drawable.ic_user_white)
+                            addFragmentToBackstack(
+                                android.R.id.content,
+                                MenuFragment.newInstance()
+                            )
                         }
 
                         else -> {

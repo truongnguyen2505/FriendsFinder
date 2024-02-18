@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
@@ -15,6 +16,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewbinding.ViewBinding
+import com.blankj.utilcode.util.BarUtils
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.finals.friendsfinder.R
@@ -26,6 +28,7 @@ import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.commons.Constants
 import com.finals.friendsfinder.utilities.commons.MessageStatus
 import com.finals.friendsfinder.utilities.setViewClickListener
+import com.finals.friendsfinder.views.home.MainActivity
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -41,6 +44,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         rootView = getViewBinding()
+        BarUtils.setStatusBarVisibility(this, false)
         setContentView(rootView.root)
 
         EventBus.getDefault().register(this)
@@ -70,6 +74,15 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     open fun setupEventControl() {
 
     }
+
+    override fun onBackPressed() {
+        val count = supportFragmentManager.backStackEntryCount
+        if (count == 1)
+            showMain()
+        super.onBackPressed()
+    }
+
+    open fun showMain(){}
 
     @SuppressLint("ClickableViewAccessibility")
     open fun setupView() {

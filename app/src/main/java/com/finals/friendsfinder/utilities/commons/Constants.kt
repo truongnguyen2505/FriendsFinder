@@ -59,3 +59,8 @@ enum class ChatKey(val key: String) {
     RECEIVER_ID("receiverId"),
     MESSAGE("message")
 }
+
+enum class TypeChat(val key: Int) {
+    LEFT(0),
+    RIGHT(1),
+}

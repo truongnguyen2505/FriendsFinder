@@ -1,11 +1,19 @@
 package com.finals.friendsfinder.views.chatting
 
+import android.annotation.SuppressLint
+import android.view.MotionEvent
+import android.widget.EditText
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.finals.friendsfinder.bases.BaseActivity
 import com.finals.friendsfinder.databinding.ActivityChatBinding
+import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.ChatKey
 import com.finals.friendsfinder.utilities.commons.SignupKey
+import com.finals.friendsfinder.utilities.hideKeyboard
 import com.finals.friendsfinder.utilities.showActivity
+import com.finals.friendsfinder.views.chatting.adapter.ChatAdapter
+import com.finals.friendsfinder.views.chatting.data.ChatModel
 import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.finals.friendsfinder.views.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -26,6 +34,7 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
     private var dbReference: DatabaseReference? = null
     private var mUserId: String = ""
     private var mUserName: String = ""
+    private var chatAdapter: ChatAdapter? = null
     override fun observeHandle() {
         super.observeHandle()
         getArg()
@@ -35,8 +44,59 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
         super.setupEventControl()
         setupDB()
         setListeners()
+        setAdapter()
+        readMess(fbUser?.uid ?: "", mUserId)
     }
 
+    private fun setAdapter() {
+        chatAdapter = ChatAdapter(this@ChatActivity)
+        rootView.rvChatting.apply {
+            layoutManager =
+                LinearLayoutManager(this@ChatActivity, LinearLayoutManager.VERTICAL, false)
+            adapter = chatAdapter
+        }
+    }
+
+    private fun readMess(senderId: String, receiverId: String) {
+        val chatList: MutableList<ChatModel> = mutableListOf()
+        dbReference = FirebaseDatabase.getInstance().getReference("Chat")
+
+        dbReference?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                chatList.clear()
+                for (dataSnap: DataSnapshot in snapshot.children) {
+                    val chat = dataSnap.getValue(ChatModel::class.java)
+                    if (chat?.senderId.equals(senderId) && chat?.receiverId.equals(receiverId) || chat?.senderId.equals(
+                            receiverId
+                        ) && chat?.receiverId.equals(senderId)
+                    ) {
+                        rootView.rvChatting.apply {
+                            layoutManager =
+                                LinearLayoutManager(
+                                    this@ChatActivity,
+                                    LinearLayoutManager.VERTICAL,
+                                    false
+                                )
+                            adapter = chatAdapter
+                        }
+                        chat?.let { chatList.add(it) }
+                    }
+                }
+                chatAdapter?.setList(chatList)
+                rootView.rvChatting.scrollToPosition(chatList.size.minus(1))
+                rootView.edtMess.apply {
+                    setText("")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
     private fun setListeners() {
         with(rootView) {
             layoutHeader.imgBack.clickWithDebounce {
@@ -57,26 +117,18 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
                     )
                 }
             }
+            frChat.setOnTouchListener { view, motionEvent ->
+                if ((motionEvent.action == MotionEvent.ACTION_UP))
+                    if (Utils.shared.checkKeyboardVisible()) {
+                        Utils.shared.showHideKeyBoard(this@ChatActivity, false)
+                    }
+                return@setOnTouchListener true
+            }
         }
     }
 
     private fun setupDB() {
         fbUser = FirebaseAuth.getInstance().currentUser
-        dbReference = FirebaseDatabase.getInstance().getReference("Users").child(fbUser?.uid ?: "")
-
-        dbReference?.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(UserInfo::class.java)
-//                if (user?.imageProfile.isNullOrEmpty())
-//                    rootVie
-//
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-
-            }
-
-        })
     }
 
     private fun sendMessage(senderId: String, receiverId: String, mess: String) {

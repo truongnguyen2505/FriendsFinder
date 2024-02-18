@@ -1,19 +1,22 @@
 package com.finals.friendsfinder.views.login
 
+import android.media.MediaPlayer.OnCompletionListener
 import com.finals.friendsfinder.bases.BaseActivity
 import com.finals.friendsfinder.databinding.ActivityLoginBinding
+import com.finals.friendsfinder.models.BaseAccessToken
 import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.showActivity
 import com.finals.friendsfinder.views.home.MainActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GetTokenResult
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     private lateinit var auth: FirebaseAuth
-    private var fbUser: FirebaseUser? = null
     override fun observeHandle() {
         super.observeHandle()
     }
@@ -27,13 +30,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun checkCurrentUser() {
-        if (fbUser != null){
+        if (BaseAccessToken.token.isNotEmpty()) {
             showActivity<MainActivity>(goRoot = true)
         }
     }
 
     private fun setText() {
-        with(rootView){
+        with(rootView) {
             edtEmail.setLabel("Email")
             edtPass.setLabel("Password")
         }
@@ -61,9 +64,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             } else {
                 auth.signInWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this@LoginActivity) {
-                        if (it.isSuccessful){
-                            showActivity<MainActivity>(goRoot = true)
-                        }else{
+                        if (it.isSuccessful) {
+                            val fbUser = Firebase.auth.currentUser
+                            fbUser?.getIdToken(false)?.addOnCompleteListener { task ->
+                                if (task.isSuccessful){
+                                    val token = task.result.token ?: ""
+                                    BaseAccessToken.accessToken = token
+                                    if (token.isNotEmpty())
+                                        showActivity<MainActivity>(goRoot = true)
+                                    else return@addOnCompleteListener
+                                }else {
+                                    return@addOnCompleteListener
+                                }
+                            }
+                        } else {
                             showMessage("Email or password invalid!")
                         }
                     }
@@ -73,8 +87,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun setupDB() {
-        auth = com.google.firebase.ktx.Firebase.auth
-        fbUser = com.google.firebase.ktx.Firebase.auth.currentUser!!
+        auth = Firebase.auth
     }
 
     override fun setupEventControl() {

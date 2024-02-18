@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/frChat"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white">
@@ -13,7 +14,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/RvChatting"
+        android:id="@+id/rvChatting"
         tools:listitem="@layout/item_chatting"
         android:layout_above="@+id/layoutMess"
         android:layout_below="@+id/layoutHeader"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:elevation="4dp"
         android:paddingHorizontal="28dp"
         android:paddingVertical="16dp">
 
