@@ -2,19 +2,14 @@ package com.finals.friendsfinder.views.chatting
 
 import android.annotation.SuppressLint
 import android.view.MotionEvent
-import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.finals.friendsfinder.bases.BaseActivity
 import com.finals.friendsfinder.databinding.ActivityChatBinding
 import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.clickWithDebounce
-import com.finals.friendsfinder.utilities.commons.ChatKey
-import com.finals.friendsfinder.utilities.commons.SignupKey
-import com.finals.friendsfinder.utilities.hideKeyboard
 import com.finals.friendsfinder.utilities.showActivity
 import com.finals.friendsfinder.views.chatting.adapter.ChatAdapter
 import com.finals.friendsfinder.views.chatting.data.ChatModel
-import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.finals.friendsfinder.views.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -134,16 +129,16 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
     private fun sendMessage(senderId: String, receiverId: String, mess: String) {
         val ref = FirebaseDatabase.getInstance().reference
         val hashMap: HashMap<String, String> = HashMap()
-        hashMap[ChatKey.RECEIVER_ID.key] = receiverId
-        hashMap[ChatKey.SENDER_ID.key] = senderId
-        hashMap[ChatKey.MESSAGE.key] = mess
+//        hashMap[ChatKey.RECEIVER_ID.key] = receiverId
+//        hashMap[ChatKey.SENDER_ID.key] = senderId
+//        hashMap[ChatKey.MESSAGE.key] = mess
         ref.child("Chat").push().setValue(hashMap)
     }
 
     private fun getArg() {
         intent?.let {
-            mUserId = it.getStringExtra(SignupKey.USERID.key) as String
-            mUserName = it.getStringExtra(SignupKey.USERNAME.key) as String
+//            mUserId = it.getStringExtra(SignupKey.USERID.key) as String
+//            mUserName = it.getStringExtra(SignupKey.USERNAME.key) as String
         }
     }
 

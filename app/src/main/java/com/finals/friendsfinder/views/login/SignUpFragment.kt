@@ -1,9 +1,10 @@
 package com.finals.friendsfinder.views.login
 
 import com.finals.friendsfinder.bases.BaseActivity
+import com.finals.friendsfinder.customizes.LoadingDialog
 import com.finals.friendsfinder.databinding.FragmentSignUpBinding
 import com.finals.friendsfinder.utilities.clickWithDebounce
-import com.finals.friendsfinder.utilities.commons.SignupKey
+import com.finals.friendsfinder.utilities.commons.UserKey
 import com.finals.friendsfinder.utilities.showActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -65,6 +66,7 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
                 return
             }
             if (pass.length < 8){
+                edtPass.setMessageError("Password has to contain from 8 characters!")
                 return
             }
             if (cfPass.isEmpty()){
@@ -81,20 +83,25 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
     }
 
     private fun registerNewUser(userName: String, email:String, pass: String){
+        LoadingDialog.show(this)
         auth.createUserWithEmailAndPassword(email, pass)
             .addOnCompleteListener(this@SignUpFragment){ it ->
+                LoadingDialog.dismiss()
                 if (it.isSuccessful){
                     val user: FirebaseUser? = auth.currentUser
                     val userId: String = user?.uid ?: ""
                     dbReference = FirebaseDatabase.getInstance().getReference("Users").child(userId)
 
                     val hasMap: HashMap<String, String> = HashMap()
-                    hasMap[SignupKey.USERID.key] = userId
-                    hasMap[SignupKey.USERNAME.key] = userName
-                    hasMap[SignupKey.PROFILE_IMAGE.key] = ""
+                    hasMap[UserKey.USERID.key] = userId
+                    hasMap[UserKey.USERNAME.key] = userName
+                    hasMap[UserKey.EMAIL.key] = email
+                    hasMap[UserKey.PASSWORD.key] = pass
+                    hasMap[UserKey.AVATAR.key] = ""
 
                     dbReference.setValue(hasMap).addOnCompleteListener(this){task ->
                         if (task.isSuccessful){
+
                             //open login activity
                             showActivity<LoginActivity>(goRoot = true)
                         }

@@ -12,6 +12,7 @@ class Constants {
     companion object {
         const val CURRENT_LANGUAGE: String = "CURRENT_LANGUAGE"
         const val EVENT_CHANGE_LANGUAGE: String = "event_change_language"
+        const val CURRENT_USER: String = "CURRENT_USER"
 
         var isLockShowPopup: Boolean = false
 
@@ -48,16 +49,43 @@ fun logout() {
     BaseAccessToken.refreshToken = ""
 }
 
-enum class SignupKey(val key: String) {
+enum class UserKey(val key: String) {
     USERID("userId"),
     USERNAME("userName"),
-    PROFILE_IMAGE("profileImage")
+    EMAIL("email"),
+    PASSWORD("password"),
+    AVATAR("avatar")
 }
 
-enum class ChatKey(val key: String) {
-    SENDER_ID("senderId"),
+enum class FriendKey(val key: String) {
+    FRIEND_ID("friendId"),
+    USERID("userId"),
     RECEIVER_ID("receiverId"),
-    MESSAGE("message")
+    IS_FRIEND("isFriend"),
+    USER_BLOCKING("userName"),
+    RECEIVER_BLOCKING("email"),
+    CREATE_AT("createAt"),
+}
+
+enum class MessageKey(val key: String) {
+    MESSAGE_ID("messageId"),
+    CREATE_AT("createAt"),
+    MESSAGE("message"),
+    USER_ID("userId"),
+    CONVERSATION_ID("conversationId")
+}
+
+enum class ConversationKey(val key: String) {
+    CONVERSATION_ID("conversationId"),
+    CONVERSATION_NAME("conversationName"),
+    CREATE_AT("createAt")
+}
+
+enum class ParticipantKey(val key: String) {
+    PARTICIPANT_ID("conversationId"),
+    USERNAME("userName"),
+    USERID("userId"),
+    AVATAR("avatar")
 }
 
 enum class TypeChat(val key: Int) {

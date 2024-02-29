@@ -46,9 +46,9 @@ class AddFriendsAdapter(private val context: Context, private val onClickItem: (
             super.bindData(data, position)
             val item = listUser[position]
             with(binding){
-                if (item.imageProfile.isEmpty())
+                if (item.avatar.isEmpty())
                     imgAvatar.setImageResource(R.drawable.ic_avatar_empty_25)
-                else Glide.with(context).load(item.imageProfile).into(imgAvatar)
+                else Glide.with(context).load(item.avatar).into(imgAvatar)
                 tvName.text = item.userName
                 layoutItem.clickWithDebounce {
                     onClickItem.invoke(item)

@@ -54,7 +54,7 @@
 
             <com.finals.friendsfinder.customizes.CustomTextViewFonts
                 android:id="@+id/btnLogin"
-                style="@style/StyleButtonOrange"
+                style="@style/StyleButtonBlack"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="24dp"

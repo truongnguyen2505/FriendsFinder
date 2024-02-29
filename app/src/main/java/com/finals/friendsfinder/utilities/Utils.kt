@@ -10,6 +10,11 @@ import android.provider.Settings
 import android.view.Surface
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.finals.friendsfinder.utilities.commons.Constants
+import com.finals.friendsfinder.views.friends.data.UserInfo
+import com.google.common.reflect.TypeToken
+import com.google.gson.Gson
+import java.lang.reflect.Type
 
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -175,5 +180,15 @@ class Utils {
         }
 
     }
+
+    fun getUser(): UserInfo? {
+        val userInfo: String =
+            (UserDefaults.standard.getSharedPreference(Constants.CURRENT_USER, "")
+                ?: "") as String
+        val type: Type = object : TypeToken<UserInfo?>() {}.type
+        return Gson().fromJson(userInfo, type)
+    }
+
+
 
 }

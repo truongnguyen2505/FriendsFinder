@@ -12,10 +12,12 @@ import com.blankj.utilcode.util.PermissionUtils
 import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseActivity
 import com.finals.friendsfinder.databinding.ActivityMainBinding
+import com.finals.friendsfinder.utilities.UserDefaults
 import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.Constants
 import com.finals.friendsfinder.views.chatting.AllMessageFragment
+import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -27,6 +29,13 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.gson.Gson
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
 
@@ -54,6 +63,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     private var mListLinear: List<LinearLayout> = listOf()
     private var mListTV: List<TextView> = listOf()
     private var mListImg: List<ImageView> = listOf()
+    private var fbUser: FirebaseUser? = null
 
     private fun checkPermission(onSuccess: (() -> Unit)) {
         PermissionUtils.permission(*Constants.LOCATION_PER)
@@ -108,7 +118,36 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
         mListTV = listOf(rootView.tvHome, rootView.tvChat, rootView.tvProfile)
         mListImg = listOf(rootView.imgHome, rootView.imgChat, rootView.imgProfile)
         mListLinear = listOf(rootView.btnHome, rootView.btnChat, rootView.btnProfile)
+        setDB()
         setButtonSelect()
+    }
+
+    private fun setDB() {
+        fbUser = FirebaseAuth.getInstance().currentUser
+
+        //get list user
+        val dbReference = FirebaseDatabase.getInstance().getReference("Users")
+
+        dbReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                for (dataSnap: DataSnapshot in snapshot.children) {
+                    val user = dataSnap.getValue(UserInfo::class.java)
+                    //check not me
+                    if (user?.userId.equals(fbUser?.uid)) {
+                        val gson = Gson()
+                        val json = gson.toJson(user)
+                        UserDefaults.standard.setSharedPreference(Constants.CURRENT_USER, json)
+                    }
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
     }
 
     override fun showMain() {
@@ -122,19 +161,37 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                 when (index) {
                     0 -> {
                         mListLinear[0].setBackgroundResource(R.drawable.bg_selected_black_border)
-                        mListTV[0].setTextColor(ContextCompat.getColor(this@MainActivity, R.color.white))
+                        mListTV[0].setTextColor(
+                            ContextCompat.getColor(
+                                this@MainActivity,
+                                R.color.white
+                            )
+                        )
                         mListImg[0].setImageResource(R.drawable.ic_home_white)
                     }
-                    1->{
+
+                    1 -> {
                         mListLinear[1].setBackgroundResource(R.drawable.bg_unselected_white_border)
-                        mListTV[1].setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
+                        mListTV[1].setTextColor(
+                            ContextCompat.getColor(
+                                this@MainActivity,
+                                R.color.black
+                            )
+                        )
                         mListImg[1].setImageResource(R.drawable.ic_chat_black)
                     }
-                    2->{
+
+                    2 -> {
                         mListLinear[2].setBackgroundResource(R.drawable.bg_unselected_white_border)
-                        mListTV[2].setTextColor(ContextCompat.getColor(this@MainActivity, R.color.black))
+                        mListTV[2].setTextColor(
+                            ContextCompat.getColor(
+                                this@MainActivity,
+                                R.color.black
+                            )
+                        )
                         mListImg[2].setImageResource(R.drawable.ic_user_black)
                     }
+
                     else -> {
 
                     }
@@ -187,9 +244,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
 
                         2 -> {
                             mListImg[2].setImageResource(R.drawable.ic_user_white)
+                            val fragment = MenuFragment.newInstance()
+                            fragment.onBackEvent = {
+                                setHomeButton()
+                            }
                             addFragmentToBackstack(
                                 android.R.id.content,
-                                MenuFragment.newInstance()
+                                fragment
                             )
                         }
 

@@ -40,8 +40,8 @@ class ChatAdapter(private val context: Context) :
         val item = chatList[position]
         holder.apply {
             tvMess.text = item.message
-//            Glide.with(context).load(item.mess).placeholder(R.drawable.ic_avatar_empty_25)
-//                .into(imgAvatar)
+            Glide.with(context).load(R.drawable.ic_avatar_empty_25).placeholder(R.drawable.ic_avatar_empty_25)
+                .into(imgAvatar)
         }
     }
 

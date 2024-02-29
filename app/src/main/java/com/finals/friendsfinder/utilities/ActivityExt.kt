@@ -24,6 +24,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.finals.friendsfinder.R
@@ -169,5 +170,24 @@ inline fun <A> tryOrNull(message: String? = null, operation: () -> A): A? {
 //            Timber.e(any, message)
         }
         null
+    }
+}
+
+fun FragmentActivity.addFragmentToBackstack(
+    frameId: Int,
+    fragment: Fragment,
+    tag: String? = null,
+    enterAnim: Int = R.anim.enter_from_right,
+    exitAnim: Int = 0,
+    popEnter: Int = 0,
+    popExit: Int = R.anim.exit_to_right,
+    allowStateLoss: Boolean = false,
+) {
+    supportFragmentManager.commitTransaction(allowStateLoss) {
+        setCustomAnimations(enterAnim, exitAnim, popEnter, popExit)
+        add(
+            frameId,
+            fragment
+        ).addToBackStack(tag)
     }
 }
