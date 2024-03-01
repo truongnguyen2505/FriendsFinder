@@ -54,16 +54,20 @@ enum class UserKey(val key: String) {
     USERNAME("userName"),
     EMAIL("email"),
     PASSWORD("password"),
-    AVATAR("avatar")
+    AVATAR("avatar"),
+    LOCATION("location"),
+    IS_SHARE_LOCATION("shareLocation"),
+    IS_ONLINE("online"),
+    UPDATED_LOCATION("updatedLocation")
 }
 
 enum class FriendKey(val key: String) {
     FRIEND_ID("friendId"),
     USERID("userId"),
     RECEIVER_ID("receiverId"),
-    IS_FRIEND("isFriend"),
-    USER_BLOCKING("userName"),
-    RECEIVER_BLOCKING("email"),
+    IS_FRIEND("friend"),
+    USER_BLOCKING("userBlocking"),
+    RECEIVER_BLOCKING("receiverBlocking"),
     CREATE_AT("createAt"),
 }
 

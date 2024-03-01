@@ -27,6 +27,7 @@ import com.finals.friendsfinder.utilities.UserDefaults
 import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.commons.Constants
 import com.finals.friendsfinder.utilities.commons.MessageStatus
+import com.finals.friendsfinder.utilities.hideKeyboardActivity
 import com.finals.friendsfinder.utilities.setViewClickListener
 import com.finals.friendsfinder.views.home.MainActivity
 import org.greenrobot.eventbus.EventBus
@@ -80,6 +81,11 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
         if (count == 1)
             showMain()
         super.onBackPressed()
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
+        hideKeyboardActivity()
+        return super.dispatchTouchEvent(event)
     }
 
     open fun showMain(){}

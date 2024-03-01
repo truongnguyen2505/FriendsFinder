@@ -77,12 +77,15 @@ class Utils {
 
     fun showHideKeyBoard(isShow: Boolean, editText: EditText) {
         val inputMethodManager = mContext?.getSystemService(
-            Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            Context.INPUT_METHOD_SERVICE
+        ) as InputMethodManager
         if (isShow) {
             inputMethodManager.showSoftInput(editText, InputMethodManager.RESULT_UNCHANGED_SHOWN)
         } else {
-            inputMethodManager.hideSoftInputFromWindow(editText.windowToken,
-                InputMethodManager.RESULT_UNCHANGED_SHOWN)
+            inputMethodManager.hideSoftInputFromWindow(
+                editText.windowToken,
+                InputMethodManager.RESULT_UNCHANGED_SHOWN
+            )
         }
     }
 
@@ -102,21 +105,27 @@ class Utils {
     private fun hideSoftKeyboard(activity: Activity) {
         val inputMethodManager =
             activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        if (activity.currentFocus != null) inputMethodManager.hideSoftInputFromWindow(activity.window.decorView
-            .windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        if (activity.currentFocus != null) inputMethodManager.hideSoftInputFromWindow(
+            activity.window.decorView
+                .windowToken, InputMethodManager.HIDE_NOT_ALWAYS
+        )
     }
 
     private fun showKeyboard(activity: Activity) {
         val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,
-            InputMethodManager.HIDE_IMPLICIT_ONLY)
+        imm.toggleSoftInput(
+            InputMethodManager.SHOW_FORCED,
+            InputMethodManager.HIDE_IMPLICIT_ONLY
+        )
     }
 
     @SuppressLint("HardwareIds")
     fun getDeviceId(): String {
         return try {
-            val androidId = Settings.Secure.getString(mContext?.contentResolver,
-                Settings.Secure.ANDROID_ID)
+            val androidId = Settings.Secure.getString(
+                mContext?.contentResolver,
+                Settings.Secure.ANDROID_ID
+            )
             md5(androidId).uppercase(Locale.getDefault())
         } catch (e: Exception) {
             Log.e(TAG, "Exception deviceId " + e.message)
@@ -147,7 +156,10 @@ class Utils {
         return s.uppercase(Locale.getDefault())
     }
 
-    fun convertToTimeNoDay(dateTime: String, format: String = "dd/M/yyyy, hh:mm '(GMT +7)'"): String {
+    fun convertToTimeNoDay(
+        dateTime: String,
+        format: String = "dd/M/yyyy, hh:mm '(GMT +7)'"
+    ): String {
         return try {
             val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
             formatter.timeZone = TimeZone.getTimeZone("UTC")
@@ -164,7 +176,10 @@ class Utils {
 
     }
 
-    fun convertToTimeWithDay(dateTime: String, format: String = "E, dd/M/yyyy, hh:mm '(GMT +7)'"): String {
+    fun convertToTimeWithDay(
+        dateTime: String,
+        format: String = "E, dd/M/yyyy, hh:mm '(GMT +7)'"
+    ): String {
         return try {
             val formatter = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'")
             formatter.timeZone = TimeZone.getTimeZone("UTC")
@@ -189,6 +204,8 @@ class Utils {
         return Gson().fromJson(userInfo, type)
     }
 
-
+    fun autoGenerateId(): String {
+        return UUID.randomUUID().toString().replace("-", "")
+    }
 
 }

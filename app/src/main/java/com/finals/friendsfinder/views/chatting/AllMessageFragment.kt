@@ -75,12 +75,12 @@ class AllMessageFragment : BaseFragment<FragmentAddFriendsBinding>() {
     }
 
     private fun setAdapter() {
-        addFriendAdapter = AddFriendsAdapter(requireContext(), onClickItem = { userInfo ->
-            val intent = Intent(requireContext(), ChatActivity::class.java)
-//            intent.putExtra(SignupKey.USERID.key, userInfo.userId)
-//            intent.putExtra(SignupKey.USERNAME.key, userInfo.userName)
-            startActivity(intent)
-        })
+//        addFriendAdapter = AddFriendsAdapter(requireContext(), onClickItem = { userInfo ->
+//            val intent = Intent(requireContext(), ChatActivity::class.java)
+////            intent.putExtra(SignupKey.USERID.key, userInfo.userId)
+////            intent.putExtra(SignupKey.USERNAME.key, userInfo.userName)
+//            startActivity(intent)
+//        })
         rootView.rvListUser.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

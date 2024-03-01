@@ -3,6 +3,7 @@ package com.finals.friendsfinder.views.home
 import android.annotation.SuppressLint
 import android.os.Looper
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -13,10 +14,13 @@ import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseActivity
 import com.finals.friendsfinder.databinding.ActivityMainBinding
 import com.finals.friendsfinder.utilities.UserDefaults
+import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.Constants
+import com.finals.friendsfinder.utilities.hideKeyboardActivity
 import com.finals.friendsfinder.views.chatting.AllMessageFragment
+import com.finals.friendsfinder.views.friends.AddFriendsFragment
 import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -64,6 +68,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     private var mListTV: List<TextView> = listOf()
     private var mListImg: List<ImageView> = listOf()
     private var fbUser: FirebaseUser? = null
+    private lateinit var dbReference: FirebaseDatabase
 
     private fun checkPermission(onSuccess: (() -> Unit)) {
         PermissionUtils.permission(*Constants.LOCATION_PER)
@@ -120,21 +125,32 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
         mListLinear = listOf(rootView.btnHome, rootView.btnChat, rootView.btnProfile)
         setDB()
         setButtonSelect()
+        setListener()
+    }
+
+    private fun setListener() {
+        with(rootView){
+            btnFriend.clickWithDebounce{
+                addFragmentToBackstack(android.R.id.content, AddFriendsFragment.newInstance())
+            }
+        }
     }
 
     private fun setDB() {
         fbUser = FirebaseAuth.getInstance().currentUser
 
         //get list user
-        val dbReference = FirebaseDatabase.getInstance().getReference("Users")
+        dbReference = FirebaseDatabase.getInstance()
 
-        dbReference.addValueEventListener(object : ValueEventListener {
+        dbReference.getReference("Users").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for (dataSnap: DataSnapshot in snapshot.children) {
                     val user = dataSnap.getValue(UserInfo::class.java)
                     //check not me
                     if (user?.userId.equals(fbUser?.uid)) {
+                        user?.online = "1"
+                        dbReference.getReference("Users").child("${user?.userId}").setValue(user)
                         val gson = Gson()
                         val json = gson.toJson(user)
                         UserDefaults.standard.setSharedPreference(Constants.CURRENT_USER, json)
@@ -148,6 +164,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
             }
 
         })
+    }
+
+    override fun onDestroy() {
+        val user = Utils.shared.getUser()
+        user?.online = "0"
+        dbReference.getReference("Users").child("${user?.userId}").setValue(user)
+        super.onDestroy()
     }
 
     override fun showMain() {
@@ -281,6 +304,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
         checkPermission {
+            mMap?.apply {
+                isMyLocationEnabled = true
+                uiSettings.isMyLocationButtonEnabled = false
+            }
             createLocationRequest()
         }
     }

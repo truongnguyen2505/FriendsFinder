@@ -17,7 +17,10 @@
 package com.finals.friendsfinder.utilities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -190,4 +193,49 @@ fun FragmentActivity.addFragmentToBackstack(
             fragment
         ).addToBackStack(tag)
     }
+}
+
+fun FragmentActivity.resetBackstack() {
+    repeat(supportFragmentManager.backStackEntryCount) {
+        supportFragmentManager.popBackStack()
+    }
+}
+
+fun Fragment.hideKeyboard() {
+    val view = this.activity?.currentFocus
+    if (view != null) {
+        view.clearFocus()
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+}
+
+fun Activity.hideKeyboard(view : View) {
+    val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(view.windowToken, 0)
+}
+fun Activity.hideKeyboardActivity() {
+    val view = this.currentFocus
+    if (view != null) {
+        view.clearFocus()
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+}
+fun Fragment.hideKeyboard(view: View) {
+    view.clearFocus()
+    val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+    imm?.hideSoftInputFromWindow(view.windowToken, 0)
+}
+fun Fragment.showKeyboard(view: View) {
+    view.requestFocus()
+    if (activity != null){
+        val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT or InputMethodManager.SHOW_FORCED)
+    }
+}
+fun Activity.showKeyboard(view: View) {
+    view.requestFocus()
+    val imm =this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT or InputMethodManager.SHOW_FORCED)
 }

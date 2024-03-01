@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/frMain"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/black">
 
     <androidx.fragment.app.FragmentContainerView
@@ -12,97 +12,124 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="12dp">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSearch"
+            android:layout_alignBottom="@+id/btnFriend"
+            android:layout_marginEnd="12dp"
+            android:layout_toStartOf="@+id/btnFriend"
+            app:srcCompat="@drawable/edt_search_img"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/btnFriend"
+            android:layout_alignParentEnd="true"
+            app:srcCompat="@drawable/ic_user_group"
+            />
+
+    </RelativeLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="12dp"
-        android:elevation="8dp"
-        android:paddingVertical="20dp"
-        android:background="@drawable/bg_boder_20_bg_white"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal">
+        android:background="@drawable/bg_boder_20_bg_white"
+        android:elevation="8dp"
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="20dp">
 
         <LinearLayout
             android:id="@+id/btnHome"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingVertical="12dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_marginEnd="12dp"
+            android:layout_weight="1"
             android:background="@drawable/bg_selected_black_border"
-            android:layout_height="wrap_content">
+            android:gravity="center"
+            android:paddingVertical="12dp">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgHome"
-                app:srcCompat="@drawable/ic_home_white"/>
+                app:srcCompat="@drawable/ic_home_white" />
 
             <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                android:id="@+id/tvHome"
+                style="@style/Text.SemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Text.SemiBold"
                 android:layout_marginStart="4dp"
-                android:id="@+id/tvHome"
+                android:text="Home"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                android:text="Home"/>
+                android:textSize="16sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/btnChat"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingVertical="12dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
             android:layout_marginEnd="12dp"
+            android:layout_weight="1"
             android:background="@drawable/bg_unselected_white_border"
-            android:layout_height="wrap_content">
+            android:gravity="center"
+            android:paddingVertical="12dp">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgChat"
-                app:srcCompat="@drawable/ic_chat_black"/>
+                app:srcCompat="@drawable/ic_chat_black" />
 
             <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                android:id="@+id/tvChat"
+                style="@style/Text.SemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Text.SemiBold"
-                android:id="@+id/tvChat"
                 android:layout_marginStart="4dp"
+                android:text="Chat"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:text="Chat"/>
+                android:textSize="16sp" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/btnProfile"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:paddingVertical="12dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:layout_weight="1"
             android:background="@drawable/bg_unselected_white_border"
-            android:layout_height="wrap_content">
+            android:gravity="center"
+            android:paddingVertical="12dp">
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgProfile"
-                app:srcCompat="@drawable/ic_user_black"/>
+                app:srcCompat="@drawable/ic_user_black" />
 
             <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                android:id="@+id/tvProfile"
+                style="@style/Text.SemiBold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Text.SemiBold"
                 android:layout_marginStart="4dp"
-                android:id="@+id/tvProfile"
+                android:text="Profile"
                 android:textColor="@color/black"
-                android:textSize="16sp"
-                android:text="Profile"/>
+                android:textSize="16sp" />
 
         </LinearLayout>
 

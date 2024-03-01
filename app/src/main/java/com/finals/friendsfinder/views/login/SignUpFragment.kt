@@ -98,6 +98,10 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
                     hasMap[UserKey.EMAIL.key] = email
                     hasMap[UserKey.PASSWORD.key] = pass
                     hasMap[UserKey.AVATAR.key] = ""
+                    hasMap[UserKey.LOCATION.key] = ""
+                    hasMap[UserKey.IS_SHARE_LOCATION.key] = "0"
+                    hasMap[UserKey.IS_ONLINE.key] = "0"
+                    hasMap[UserKey.UPDATED_LOCATION.key] = ""
 
                     dbReference.setValue(hasMap).addOnCompleteListener(this){task ->
                         if (task.isSuccessful){
