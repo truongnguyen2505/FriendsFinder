@@ -64,7 +64,7 @@ class AllMessageFragment : BaseFragment<FragmentAddFriendsBinding>() {
                         currentListUser?.add(user!!)
                     }
                 }
-                addFriendAdapter?.setList(currentListUser ?: listOf())
+               // addFriendAdapter?.setList(currentListUser ?: listOf())
             }
 
             override fun onCancelled(error: DatabaseError) {

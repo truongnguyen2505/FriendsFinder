@@ -9,5 +9,6 @@ data class UserDTO(
     var friend: String = "",
     var userBlocking: String = "",
     var receiverBlocking: String = "",
-    var typeClick: Int = 0
+    var typeClick: Int = 0,
+    var email: String = ""
 )

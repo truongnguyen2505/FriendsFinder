@@ -21,10 +21,15 @@ class AddFriendsAdapter(
 ) :
     RecyclerView.Adapter<AddFriendsAdapter.AddFriendVH>() {
 
-//    private val listUser: MutableList<UserInfo> = mutableListOf()
+    //    private val listUser: MutableList<UserInfo> = mutableListOf()
 //    private var listFriend: MutableList<Friends> = mutableListOf()
+    /*
+    * typeClick: 1-user is sender
+    * 2-user is receiver
+    * else -> 3 */
     private var listUserDTO: MutableList<UserDTO> = mutableListOf()
-    var addFriend: ((UserDTO) -> Unit)? = null
+    var addFriend: ((UserDTO, typeClick: Int) -> Unit)? = null
+    var removeFriend: ((UserDTO, typeClick: Int) -> Unit)? = null
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -62,6 +67,18 @@ class AddFriendsAdapter(
             val item = listUserDTO[position]
 
             with(binding) {
+                if (currentUser?.userId == item.userId && currentUser.userId != item.receiverId) {
+                    //case current user is sender
+                    checkFriend(position, "Pending")
+                } else if (currentUser?.userId == item.receiverId && currentUser.userId != item.userId) {
+                    //case current user is receiver
+                    checkFriend(position, "Accept")
+                } else {
+                    btnAdd.text = "Add"
+                    btnAdd.clickWithDebounce {
+                        addFriend?.invoke(item, 3)
+                    }
+                }
                 if (item.avatar.isEmpty())
                     imgAvatar.setImageResource(R.drawable.ic_avatar_empty_25)
                 else Glide.with(context).load(item.avatar).into(imgAvatar)
@@ -69,26 +86,45 @@ class AddFriendsAdapter(
                 layoutItem.clickWithDebounce {
                     onClickItem.invoke(item)
                 }
-                btnAdd.clickWithDebounce {
-                    addFriend?.invoke(item)
-                }
             }
 
         }
 
-        private fun checkFriend(isFriend: String, txtBtn1: String) {
+        private fun checkFriend(pos: Int, txtBtn1: String) {
             with(binding) {
-                when (isFriend) {
+                when (listUserDTO[pos].friend) {
                     "0" -> {
                         btnAdd.text = "Add"
                     }
 
                     "1" -> {
                         btnAdd.text = txtBtn1
+                        btnAdd.clickWithDebounce {
+                            if (currentUser?.userId == listUserDTO[pos].userId && currentUser.userId != listUserDTO[pos].receiverId) {
+                                //case current user is sender
+                                removeFriend?.invoke(listUserDTO[pos], 1)
+                            } else if (currentUser?.userId == listUserDTO[pos].receiverId && currentUser.userId != listUserDTO[pos].userId) {
+                                //case current user is receiver
+                                addFriend?.invoke(listUserDTO[pos], 2)
+                            } else {
+                                addFriend?.invoke(listUserDTO[pos], 3)
+                            }
+                        }
                     }
 
                     "2" -> {
                         btnAdd.text = "Friend"
+                        btnAdd.clickWithDebounce {
+                            if (currentUser?.userId == listUserDTO[pos].userId && currentUser.userId != listUserDTO[pos].receiverId) {
+                                //case current user is sender
+                                removeFriend?.invoke(listUserDTO[pos], 1)
+                            } else if (currentUser?.userId == listUserDTO[pos].receiverId && currentUser.userId != listUserDTO[pos].userId) {
+                                //case current user is receiver
+                                removeFriend?.invoke(listUserDTO[pos], 1)
+                            } else {
+                                addFriend?.invoke(listUserDTO[pos], 3)
+                            }
+                        }
                     }
 
                     else -> {
