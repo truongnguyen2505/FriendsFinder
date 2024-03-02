@@ -21,6 +21,8 @@
     <string name="Roboto_Thin" translatable="false">fonts/Roboto-Thin.ttf</string>
     <string name="Roboto_ThinItalic" translatable="false">fonts/Roboto-ThinItalic.ttf</string>
     <string name="Roboto_Semi_bold" translatable="false">fonts/roboto-mono-semi-bold.ttf</string>
+    <string name="Panton_Semibold" translatable="false">fonts/panton-semibold.otf</string>
+    <string name="Panton_Shadow" translatable="false">fonts/panton-shadow.otf</string>
 
 
 </resources>

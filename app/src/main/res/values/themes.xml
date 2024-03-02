@@ -39,6 +39,12 @@
     <style name="Text.SemiBold" parent="Widget.AppCompat.TextView">
         <item name="font_type">@string/Roboto_Semi_bold</item>
     </style>
+    <style name="Text.PantonSemibold" parent="Widget.AppCompat.TextView">
+        <item name="font_type">@string/Panton_Semibold</item>
+    </style>
+    <style name="Text.PantonShadow" parent="Widget.AppCompat.TextView">
+        <item name="font_type">@string/Panton_Shadow</item>
+    </style>
 
     <style name="Text.Medium" parent="Widget.AppCompat.TextView">
         <item name="font_type">@string/Roboto_Medium</item>

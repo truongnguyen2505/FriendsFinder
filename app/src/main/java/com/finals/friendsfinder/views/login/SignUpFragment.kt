@@ -1,24 +1,41 @@
 package com.finals.friendsfinder.views.login
 
+import android.os.Bundle
+import android.view.LayoutInflater
 import com.finals.friendsfinder.bases.BaseActivity
+import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.customizes.LoadingDialog
 import com.finals.friendsfinder.databinding.FragmentSignUpBinding
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.UserKey
 import com.finals.friendsfinder.utilities.showActivity
+import com.finals.friendsfinder.views.friends.AddFriendsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
+class SignUpFragment: BaseFragment<FragmentSignUpBinding>() {
+
+    companion object{
+        fun newInstance(): SignUpFragment {
+            val arg = Bundle()
+            return SignUpFragment().apply {
+                arguments = arg
+            }
+        }
+    }
 
     private lateinit var auth: FirebaseAuth
     private lateinit var dbReference: DatabaseReference
 
     override fun observeHandle() {
         super.observeHandle()
+    }
+
+    override fun getViewBinding(inflater: LayoutInflater): FragmentSignUpBinding {
+        return FragmentSignUpBinding.inflate(inflater)
     }
 
     override fun setupView() {
@@ -43,6 +60,9 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
             }
             btnSignUp.clickWithDebounce {
                 checkEmptyToRegister()
+            }
+            btnBack.clickWithDebounce {
+                activity?.supportFragmentManager?.popBackStack()
             }
         }
     }
@@ -83,9 +103,9 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
     }
 
     private fun registerNewUser(userName: String, email:String, pass: String){
-        LoadingDialog.show(this)
+        LoadingDialog.show(requireContext())
         auth.createUserWithEmailAndPassword(email, pass)
-            .addOnCompleteListener(this@SignUpFragment){ it ->
+            .addOnCompleteListener{
                 LoadingDialog.dismiss()
                 if (it.isSuccessful){
                     val user: FirebaseUser? = auth.currentUser
@@ -104,11 +124,10 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
                     hasMap[UserKey.UPDATED_LOCATION.key] = ""
                     hasMap[UserKey.ADDRESS.key] = ""
 
-                    dbReference.setValue(hasMap).addOnCompleteListener(this){task ->
+                    dbReference.setValue(hasMap).addOnCompleteListener{task ->
                         if (task.isSuccessful){
-
                             //open login activity
-                            showActivity<LoginActivity>(goRoot = true)
+                            activity?.supportFragmentManager?.popBackStack()
                         }
                     }
 
@@ -133,9 +152,5 @@ class SignUpFragment: BaseActivity<FragmentSignUpBinding>() {
 
     override fun setupEventControl() {
         super.setupEventControl()
-    }
-
-    override fun getViewBinding(): FragmentSignUpBinding {
-        return FragmentSignUpBinding.inflate(layoutInflater)
     }
 }

@@ -5,6 +5,7 @@ import com.finals.friendsfinder.customizes.LoadingDialog
 import com.finals.friendsfinder.databinding.ActivityLoginBinding
 import com.finals.friendsfinder.models.BaseAccessToken
 import com.finals.friendsfinder.utilities.UserDefaults
+import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.Constants
 import com.finals.friendsfinder.utilities.showActivity
@@ -100,7 +101,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         super.setupEventControl()
         with(rootView) {
             btnSignup.clickWithDebounce {
-                showActivity<SignUpFragment>(goRoot = false)
+                addFragmentToBackstack(android.R.id.content, SignUpFragment.newInstance())
             }
         }
     }
