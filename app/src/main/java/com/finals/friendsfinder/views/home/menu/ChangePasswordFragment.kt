@@ -50,6 +50,9 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>() {
 
     private fun setListener() {
         with(rootView) {
+            edtOldPass.setTypePassWord()
+            edtNewPass.setTypePassWord()
+            edtNewConfirmPass.setTypePassWord()
             btnChange.clickWithDebounce {
                 changePass()
             }
@@ -103,7 +106,7 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>() {
                         userInfo?.userId?.let {
                             FirebaseDatabase.getInstance().getReference("Users").child(it)
                                 .setValue(userInfo).addOnCompleteListener {
-                                getUserInfo()
+                                activity?.supportFragmentManager?.popBackStack()
                             }
                         }
                         edtOldPass.setText("")

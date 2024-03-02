@@ -9,6 +9,7 @@ import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.showActivity
 import com.finals.friendsfinder.views.home.menu.ChangePasswordFragment
+import com.finals.friendsfinder.views.home.menu.SettingProfile
 import com.finals.friendsfinder.views.login.LoginActivity
 
 class MenuFragment : BaseFragment<FragmentMenuBinding>() {
@@ -39,6 +40,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
                     android.R.id.content,
                     ChangePasswordFragment.newInstance()
                 )
+            }
+            btnSetting.clickWithDebounce {
+                activity?.addFragmentToBackstack(android.R.id.content, SettingProfile.newInstance())
             }
         }
     }

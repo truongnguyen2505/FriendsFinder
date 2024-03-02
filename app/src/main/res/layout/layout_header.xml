@@ -21,7 +21,7 @@
 
     <com.finals.friendsfinder.customizes.CustomTextViewFonts
         android:id="@+id/tvMessage"
-        style="@style/TextBlack14Bold"
+        style="@style/TextBlack18Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

@@ -154,6 +154,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                         val gson = Gson()
                         val json = gson.toJson(user)
                         UserDefaults.standard.setSharedPreference(Constants.CURRENT_USER, json)
+                        Log.d(TAG, "CURRENT_USER main: save userinfo")
                     }
                 }
 
