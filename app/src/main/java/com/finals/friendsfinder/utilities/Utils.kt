@@ -19,6 +19,9 @@ import java.lang.reflect.Type
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -206,6 +209,14 @@ class Utils {
 
     fun autoGenerateId(): String {
         return UUID.randomUUID().toString().replace("-", "")
+    }
+
+    fun getDateTimeNow(): String{
+        val date = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
+            .withZone(ZoneOffset.UTC)
+            .format(Instant.now())
+        return date
     }
 
 }

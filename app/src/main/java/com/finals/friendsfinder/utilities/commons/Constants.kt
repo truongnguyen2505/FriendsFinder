@@ -93,6 +93,13 @@ enum class ParticipantKey(val key: String) {
     AVATAR("avatar")
 }
 
+enum class LocationKey(val key: String) {
+    LOCATION_ID("locationId"),
+    COORDINATE("coordinate"),
+    CREATE_AT("createAt"),
+    USER_ID("userId")
+}
+
 enum class TypeChat(val key: Int) {
     LEFT(0),
     RIGHT(1),

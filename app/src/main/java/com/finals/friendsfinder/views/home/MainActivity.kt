@@ -18,9 +18,12 @@ import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.Constants
+import com.finals.friendsfinder.utilities.commons.LocationKey
+import com.finals.friendsfinder.utilities.commons.UserKey
 import com.finals.friendsfinder.utilities.hideKeyboardActivity
 import com.finals.friendsfinder.views.chatting.AllMessageFragment
 import com.finals.friendsfinder.views.friends.AddFriendsFragment
+import com.finals.friendsfinder.views.friends.data.Location
 import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -37,6 +40,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.gson.Gson
@@ -44,6 +48,7 @@ import com.google.gson.Gson
 class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
 
     companion object {
+        const val TIME_UPDATE_LOCATION = 60000*5L
         const val TAG = "MAP_ACTIVITY"
     }
 
@@ -56,9 +61,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
             super.onLocationResult(locationResult)
             val lat = locationResult.lastLocation?.latitude ?: 0.0
             val lng = locationResult.lastLocation?.longitude ?: 0.0
-            val latLng = LatLng(lat, lng)
-            Log.d(TAG, "onLocationResult: $lat $lng $isFirstZoom")
+            createLocationDB(lat, lng)
+           // Log.d(TAG, "onLocationResult: $lat $lng $isFirstZoom")
             if (isFirstZoom) {
+                val latLng = LatLng(lat, lng)
                 isFirstZoom = false
                 updateMyLocation(latLng)
             }
@@ -68,8 +74,30 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     private var mListTV: List<TextView> = listOf()
     private var mListImg: List<ImageView> = listOf()
     private var fbUser: FirebaseUser? = null
-    private lateinit var dbReference: FirebaseDatabase
+    private var listUserLocation: MutableList<Location?> = mutableListOf()
 
+    private fun createLocationDB(lat: Double, lng: Double){
+        val userInfo = Utils.shared.getUser()
+        if (userInfo?.shareLocation == "0"){
+            return
+        }else{
+            val uuId = Utils.shared.autoGenerateId()
+            val dateTimeNow = Utils.shared.getDateTimeNow()
+            val dbReference = FirebaseDatabase.getInstance().getReference("Locations").child(uuId)
+
+            val hasMap: HashMap<String, String> = HashMap()
+            hasMap[LocationKey.LOCATION_ID.key] = uuId
+            hasMap[LocationKey.COORDINATE.key] = "$lat, $lng"
+            hasMap[LocationKey.CREATE_AT.key] = dateTimeNow
+            hasMap[LocationKey.USER_ID.key] = userInfo?.userId ?: ""
+
+            dbReference.setValue(hasMap).addOnCompleteListener{task ->
+                if (task.isSuccessful){
+                    // do if success
+                }
+            }
+        }
+    }
     private fun checkPermission(onSuccess: (() -> Unit)) {
         PermissionUtils.permission(*Constants.LOCATION_PER)
             .callback(object : PermissionUtils.FullCallback {
@@ -94,7 +122,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     @SuppressLint("MissingPermission")
     private fun createLocationRequest() {
         // request get location
-        val mLocationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 60000L)
+        val mLocationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, TIME_UPDATE_LOCATION)
             .setWaitForAccurateLocation(false)
             .build()
 
@@ -140,9 +168,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
         fbUser = FirebaseAuth.getInstance().currentUser
 
         //get list user
-        dbReference = FirebaseDatabase.getInstance()
+        val dbReference = FirebaseDatabase.getInstance().getReference("Users")
+        val dbReference2 = FirebaseDatabase.getInstance().getReference("Locations")
 
-        dbReference.getReference("Users").addValueEventListener(object : ValueEventListener {
+        dbReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for (dataSnap: DataSnapshot in snapshot.children) {
@@ -150,11 +179,30 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                     //check not me
                     if (user?.userId.equals(fbUser?.uid)) {
                         user?.online = "1"
-                        dbReference.getReference("Users").child("${user?.userId}").setValue(user)
+                        dbReference.child("${user?.userId}").setValue(user)
                         val gson = Gson()
                         val json = gson.toJson(user)
                         UserDefaults.standard.setSharedPreference(Constants.CURRENT_USER, json)
                         Log.d(TAG, "CURRENT_USER main: save userinfo")
+                    }
+                }
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+
+            }
+
+        })
+
+        dbReference2.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listUserLocation.clear()
+                for (dataSnap: DataSnapshot in snapshot.children) {
+                    val userLocation = dataSnap.getValue(Location::class.java)
+                    //check not me
+                    if (!userLocation?.userId.equals(fbUser?.uid)) {
+                        listUserLocation.add(userLocation)
                     }
                 }
 
@@ -170,7 +218,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     override fun onDestroy() {
         val user = Utils.shared.getUser()
         user?.online = "0"
-        dbReference.getReference("Users").child("${user?.userId}").setValue(user)
+        FirebaseDatabase.getInstance().getReference("Users").child("${user?.userId}").setValue(user)
         super.onDestroy()
     }
 

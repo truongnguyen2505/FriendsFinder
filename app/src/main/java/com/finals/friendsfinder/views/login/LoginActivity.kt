@@ -1,10 +1,12 @@
 package com.finals.friendsfinder.views.login
 
+import android.util.Log
 import com.finals.friendsfinder.bases.BaseActivity
 import com.finals.friendsfinder.customizes.LoadingDialog
 import com.finals.friendsfinder.databinding.ActivityLoginBinding
 import com.finals.friendsfinder.models.BaseAccessToken
 import com.finals.friendsfinder.utilities.UserDefaults
+import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.Constants

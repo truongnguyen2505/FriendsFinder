@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import com.bumptech.glide.Glide
+import com.bumptech.glide.util.Util
 import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.customizes.LoadingDialog
@@ -32,13 +33,17 @@ class SettingProfile : BaseFragment<FragmentEditProfileBinding>() {
     override fun bindData() {
         super.bindData()
         setText()
-        setListener()
         setInfo()
+        setListener()
     }
 
     private fun setInfo() {
         with(rootView) {
             val userInfo = Utils.shared.getUser()
+            imgSelectorLocation.isSelected = userInfo?.shareLocation != "0"
+            isLocationSharing = imgSelectorLocation.isSelected
+            edtName.setText(userInfo?.userName ?: "")
+            edtAddress.setText(userInfo?.address ?: "")
             if (userInfo?.avatar.isNullOrEmpty())
                 imgAvatar.setImageResource(R.drawable.ic_avatar_empty_25)
             else Glide.with(requireContext()).load(userInfo?.avatar).into(imgAvatar)
@@ -71,12 +76,12 @@ class SettingProfile : BaseFragment<FragmentEditProfileBinding>() {
             FirebaseDatabase.getInstance().getReference("Users").child(userInfo?.userId ?: "")
                 .setValue(userInfo).addOnCompleteListener {
                     LoadingDialog.dismiss()
-                    if (it.isSuccessful){
+                    if (it.isSuccessful) {
                         showMessage("Update profile successfully!")
-                    }else{
+                    } else {
                         showMessage(getString(R.string.str_error_occurs))
                     }
-            }
+                }
         }
     }
 
