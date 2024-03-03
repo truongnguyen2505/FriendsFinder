@@ -73,15 +73,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                         if (it.isSuccessful) {
                             val fbUser = Firebase.auth.currentUser
                             fbUser?.getIdToken(false)?.addOnCompleteListener { task ->
-                                if (task.isSuccessful){
+                                if (task.isSuccessful) {
                                     val token = task.result.token ?: ""
                                     BaseAccessToken.accessToken = token
-                                    if (token.isNotEmpty()){
+                                    if (token.isNotEmpty()) {
                                         showActivity<MainActivity>(goRoot = true)
-                                    }
-
-                                    else return@addOnCompleteListener
-                                }else {
+                                    } else return@addOnCompleteListener
+                                } else {
                                     return@addOnCompleteListener
                                 }
                             }

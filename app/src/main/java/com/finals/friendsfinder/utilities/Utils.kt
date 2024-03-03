@@ -212,11 +212,14 @@ class Utils {
     }
 
     fun getDateTimeNow(): String{
-        val date = DateTimeFormatter
-            .ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
-            .withZone(ZoneOffset.UTC)
-            .format(Instant.now())
-        return date
+        return try {
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'")
+            val netDate = Date(System.currentTimeMillis())
+            sdf.format(netDate)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
     }
 
 }

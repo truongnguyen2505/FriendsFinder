@@ -4,5 +4,6 @@ data class Location(
     var locationId: String = "",
     var coordinate: String = "",
     var createAt: String = "",
-    var userId: String = ""
+    var userId: String = "",
+    var userName: String = ""
 )

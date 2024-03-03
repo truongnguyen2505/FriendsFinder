@@ -97,8 +97,18 @@ enum class LocationKey(val key: String) {
     LOCATION_ID("locationId"),
     COORDINATE("coordinate"),
     CREATE_AT("createAt"),
-    USER_ID("userId")
+    USER_ID("userId"),
+    USERNAME("userName")
 }
+
+enum class TableKey(val key: String) {
+    USERS("Users"),
+    LOCATIONS("Locations"),
+    MESSAGES("Messages"),
+    FRIENDS("Friends"),
+    PARTICIPANTS("Participants")
+}
+
 
 enum class TypeChat(val key: Int) {
     LEFT(0),
