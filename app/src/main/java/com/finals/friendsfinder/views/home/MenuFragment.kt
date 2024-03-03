@@ -5,12 +5,17 @@ import android.view.LayoutInflater
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentMenuBinding
 import com.finals.friendsfinder.models.BaseAccessToken
+import com.finals.friendsfinder.utilities.UserDefaults
+import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
+import com.finals.friendsfinder.utilities.commons.Constants
+import com.finals.friendsfinder.utilities.commons.TableKey
 import com.finals.friendsfinder.utilities.showActivity
 import com.finals.friendsfinder.views.home.menu.ChangePasswordFragment
 import com.finals.friendsfinder.views.home.menu.SettingProfile
 import com.finals.friendsfinder.views.login.LoginActivity
+import com.google.firebase.database.FirebaseDatabase
 
 class MenuFragment : BaseFragment<FragmentMenuBinding>() {
 
@@ -28,8 +33,17 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
         super.bindData()
         with(rootView) {
             btnLogout.clickWithDebounce {
-                BaseAccessToken.accessToken = ""
-                activity?.showActivity<LoginActivity>(goRoot = true)
+                (activity as? MainActivity)?.setLogout(true)
+                val user = Utils.shared.getUser()
+                user?.online = "0"
+                FirebaseDatabase.getInstance().getReference(TableKey.USERS.key)
+                    .child("${user?.userId}").setValue(user).addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            BaseAccessToken.accessToken = ""
+                            UserDefaults.standard.setSharedPreference(Constants.CURRENT_USER, "")
+                            activity?.showActivity<LoginActivity>(goRoot = true)
+                        }
+                    }
             }
             btnClose.clickWithDebounce {
                 onBackEvent?.invoke()

@@ -44,6 +44,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.tabs.TabLayout.Tab
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -85,6 +86,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     private var fbUser: FirebaseUser? = null
     private var listUserLocation: MutableList<Location?> = mutableListOf()
     private var listUserFriend: MutableList<Friends?> = mutableListOf()
+    private var listAllUser: MutableList<UserInfo?> = mutableListOf()
+    private var typeCheckLogout = false
 
     private fun createLocationDB(lat: Double, lng: Double) {
         val userInfo = Utils.shared.getUser()
@@ -128,31 +131,35 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     }
 
     private fun addMarkerMap(
-        latLng: LatLng,
-        userName: String,
+        userLocationDTO: UserLocationDTO,
         zIndex: Float,
     ) {
-        mMap?.addMarker(
-            MarkerOptions()
-                .position(latLng)
-                .icon(
-                    BitmapDescriptorFactory.fromBitmap(
-                        createMarker(userName)!!
+        rootView.btnHome.post {
+            mMap?.addMarker(
+                MarkerOptions()
+                    .position(userLocationDTO.location)
+                    .icon(
+                        BitmapDescriptorFactory.fromBitmap(
+                            createMarker(userLocationDTO.userName, userLocationDTO.isOnline)!!
+                        )
                     )
-                )
-                .zIndex(zIndex)
-        )
+                    .zIndex(zIndex)
+            )
+        }
     }
 
-    @SuppressLint("MissingInflatedId")
-    private fun createMarker(userName: String): Bitmap? {
+    private fun createMarker(userName: String, isOnline: String): Bitmap? {
         val view: View =
             (getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater).inflate(
                 R.layout.layout_custom_marker,
                 null
             )
         val tvName = view.findViewById<TextView>(R.id.tvUserName)
+        val tvStatus = view.findViewById<TextView>(R.id.tvStatus)
         tvName.text = userName
+        if (isOnline == "0") {
+            tvStatus.setBackgroundResource(R.drawable.ic_custom_offline)
+        } else tvStatus.setBackgroundResource(R.drawable.ic_custom_online)
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         view.layoutParams = ViewGroup.LayoutParams(
@@ -216,6 +223,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
         setListener()
     }
 
+    fun setLogout(isLogout: Boolean) {
+        this.typeCheckLogout = isLogout
+    }
+
     private fun setListener() {
         with(rootView) {
             btnFriend.clickWithDebounce {
@@ -234,17 +245,22 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
 
         dbReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
+                listAllUser.clear()
                 for (dataSnap: DataSnapshot in snapshot.children) {
                     val user = dataSnap.getValue(UserInfo::class.java)
                     //check not me
                     if (user?.userId.equals(fbUser?.uid)) {
-                        user?.online = "1"
-                        dbReference.child("${user?.userId}").setValue(user)
                         val gson = Gson()
                         val json = gson.toJson(user)
                         UserDefaults.standard.setSharedPreference(Constants.CURRENT_USER, json)
-                        Log.d(TAG, "CURRENT_USER main: save userinfo")
+                        if (!typeCheckLogout) {
+                            Log.d(TAG, "onDestroy: 3")
+                            user?.online = "1"
+                            dbReference.child(user?.userId ?: "").setValue(user)
+                        }
+                        //Log.d(TAG, "CURRENT_USER main: save userinfo")
+                    } else {
+                        listAllUser.add(user)
                     }
                 }
 
@@ -304,6 +320,9 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
             mListLocationDTO.clear()
             listUserLocation.forEachIndexed { indexL, location ->
                 if (friends?.userId == location?.userId || friends?.receiverId == location?.userId) {
+                    val mListFilterUser = listAllUser.filter {
+                        it?.userId == location?.userId
+                    }
                     val split = location?.coordinate?.split(", ")
                     mListLocationDTO.add(
                         UserLocationDTO(
@@ -312,7 +331,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                                 (split?.get(0)?.toDouble() ?: 0.0),
                                 (split?.get(1)?.toDouble() ?: 0.0)
                             ),
-                            createAt = location?.createAt ?: ""
+                            createAt = location?.createAt ?: "",
+                            isOnline = mListFilterUser[0]?.online ?: "0"
                         )
                     )
                 }
@@ -322,8 +342,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
             }
             if (sortList.isNotEmpty()) {
                 addMarkerMap(
-                    latLng = sortList.first().location,
-                    userName = sortList.first().userName,
+                    sortList.first(),
                     zIndex = mPos.toFloat()
                 )
             }
@@ -331,11 +350,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        typeCheckLogout = false
+    }
+
     override fun onDestroy() {
-        val user = Utils.shared.getUser()
-        user?.online = "0"
-        FirebaseDatabase.getInstance().getReference("Users").child("${user?.userId}").setValue(user)
+        //Log.d(TAG, "onDestroy: 1")
+        //Log.d(TAG, "onDestroy: $typeCheckLogout")
+        if (!typeCheckLogout) {
+            typeCheckLogout = true
+            val user = Utils.shared.getUser()
+            user?.online = "0"
+            //Log.d(TAG, "onDestroy: 1.5")
+            FirebaseDatabase.getInstance().getReference(TableKey.USERS.key).child("${user?.userId}")
+                .setValue(user)
+        }
         super.onDestroy()
+        //Log.d(TAG, "onDestroy: 2")
     }
 
     override fun showMain() {
@@ -468,8 +500,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        checkShowLocationFriend()
         checkPermission {
-            checkShowLocationFriend()
             mMap?.apply {
                 isMyLocationEnabled = true
                 uiSettings.isMyLocationButtonEnabled = false

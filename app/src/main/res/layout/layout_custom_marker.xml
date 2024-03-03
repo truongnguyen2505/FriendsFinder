@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:padding="4dp">
+
 
     <com.finals.friendsfinder.customizes.CustomTextViewFonts
         android:layout_width="wrap_content"
@@ -14,9 +15,31 @@
         android:background="@drawable/bg_border_main"
         style="@style/Text.SemiBold"
         android:textColor="@color/white"
-        android:paddingHorizontal="12dp"
+        app:layout_constraintStart_toEndOf="@+id/imgAvatar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="-16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:paddingEnd="12dp"
+        android:paddingStart="20dp"
         android:paddingVertical="8dp"
         android:textSize="16sp"
         tools:text="user name"/>
 
-</LinearLayout>
+    <com.finals.friendsfinder.customizes.CircleImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/imgAvatar"
+        android:src="@drawable/ic_avatar_empty_25"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+   <com.finals.friendsfinder.customizes.CustomTextViewFonts
+       android:layout_width="8dp"
+       android:layout_height="8dp"
+       android:layout_marginEnd="4dp"
+       android:id="@+id/tvStatus"
+       app:layout_constraintBottom_toBottomOf="@+id/imgAvatar"
+       app:layout_constraintEnd_toEndOf="@+id/imgAvatar"
+       android:background="@drawable/ic_custom_online"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
