@@ -96,7 +96,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
         } else {
             val uuId = Utils.shared.autoGenerateId()
             val dateTimeNow = Utils.shared.getDateTimeNow()
-            val dbReference = FirebaseDatabase.getInstance().getReference(TableKey.LOCATIONS.key).child(uuId)
+            val dbReference =
+                FirebaseDatabase.getInstance().getReference(TableKey.LOCATIONS.key).child(uuId)
 
             val hasMap: HashMap<String, String> = HashMap()
             hasMap[LocationKey.LOCATION_ID.key] = uuId
@@ -231,6 +232,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
         with(rootView) {
             btnFriend.clickWithDebounce {
                 addFragmentToBackstack(android.R.id.content, AddFriendsFragment.newInstance())
+            }
+            btnSearch.clickWithDebounce {
+                addFragmentToBackstack(
+                    android.R.id.content,
+                    SearchFragment.newInstance(ArrayList(listAllUser))
+                )
             }
         }
     }

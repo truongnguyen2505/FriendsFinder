@@ -1,5 +1,9 @@
 package com.finals.friendsfinder.views.friends.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class UserInfo(
     var userId: String = "",
     var userName: String = "",
@@ -11,4 +15,4 @@ data class UserInfo(
     val location: String = "",
     var address: String = "",
     var phoneNumber: String = "",
-    val updatedLocation: String = "")
+    val updatedLocation: String = ""): Parcelable

@@ -132,10 +132,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                 edtConfirmPass.setMessageError("Password is not match!")
                 return
             }
-            phone = if (phone.startsWith("0")) {
+            val newPhone = if (phone.startsWith("0")) {
                 "+84" + phone.removeRange(0, 1)
             } else return@with
-            sendOtp(userName, email, pass, phone)
+            sendOtp(userName, email, pass, newPhone, phone)
         }
 
     }
@@ -144,11 +144,12 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
         userName: String,
         email: String,
         pass: String,
+        newPhone: String,
         phoneNumber: String
     ) {
         LoadingDialog.show(requireContext())
         val builder = PhoneAuthOptions.Builder(auth)
-            .setPhoneNumber(phoneNumber)
+            .setPhoneNumber(newPhone)
             .setTimeout(TIME_OUT, TimeUnit.SECONDS)
             .setActivity(requireActivity())
             .setCallbacks(object : OnVerificationStateChangedCallbacks() {
