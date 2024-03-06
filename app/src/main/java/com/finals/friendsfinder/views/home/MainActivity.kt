@@ -96,7 +96,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
         } else {
             val uuId = Utils.shared.autoGenerateId()
             val dateTimeNow = Utils.shared.getDateTimeNow()
-            val dbReference = FirebaseDatabase.getInstance().getReference("Locations").child(uuId)
+            val dbReference = FirebaseDatabase.getInstance().getReference(TableKey.LOCATIONS.key).child(uuId)
 
             val hasMap: HashMap<String, String> = HashMap()
             hasMap[LocationKey.LOCATION_ID.key] = uuId

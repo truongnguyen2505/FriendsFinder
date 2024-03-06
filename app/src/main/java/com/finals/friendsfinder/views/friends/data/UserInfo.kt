@@ -10,4 +10,5 @@ data class UserInfo(
     var online: String = "",
     val location: String = "",
     var address: String = "",
+    var phoneNumber: String = "",
     val updatedLocation: String = "")

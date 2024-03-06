@@ -1,87 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/white"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:fillViewport="true">
 
-    <com.finals.friendsfinder.customizes.CustomTextViewFonts
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Text.PantonShadow"
-        android:text="Friends\n Finder"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:textSize="36sp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="24dp"
-        />
-
-    <com.finals.friendsfinder.customizes.CustomEditText
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edtName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgLogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="24dp"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <com.finals.friendsfinder.customizes.CustomEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edtEmail"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgLogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"/>
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
+            style="@style/Text.PantonShadow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:text="Friends\n Finder"
+            android:textColor="@color/black"
+            android:textSize="36sp" />
 
-    <com.finals.friendsfinder.customizes.CustomEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edtPass"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgLogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"/>
+        <com.finals.friendsfinder.customizes.CustomEditText
+            android:id="@+id/edtName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
 
-    <com.finals.friendsfinder.customizes.CustomEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/edtConfirmPass"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgLogo"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"/>
+        <com.finals.friendsfinder.customizes.CustomEditText
+            android:id="@+id/edtPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
+
+        <com.finals.friendsfinder.customizes.CustomEditText
+            android:id="@+id/edtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
+
+        <com.finals.friendsfinder.customizes.CustomEditText
+            android:id="@+id/edtPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
+
+        <com.finals.friendsfinder.customizes.CustomEditText
+            android:id="@+id/edtConfirmPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogo" />
 
 
-    <com.finals.friendsfinder.customizes.CustomTextViewFonts
-        android:id="@+id/btnSignUp"
-        style="@style/StyleButtonBlack"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        app:layout_constraintTop_toBottomOf="@+id/edtPass"
-        android:layout_marginTop="24dp"
-        android:text="SIGN UP" />
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
+            android:id="@+id/btnSignUp"
+            style="@style/StyleButtonBlack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            android:text="SIGN UP"
+            app:layout_constraintTop_toBottomOf="@+id/edtPass" />
 
-    <com.finals.friendsfinder.customizes.CustomTextViewFonts
-        android:id="@+id/btnBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        style="@style/Text.SemiBold"
-        android:textSize="16sp"
-        android:layout_gravity="center"
-        android:paddingVertical="12dp"
-        android:textColor="@color/black"
-        android:paddingHorizontal="12dp"
-        app:layout_constraintTop_toBottomOf="@+id/edtPass"
-        android:layout_marginTop="24dp"
-        android:text="LOGIN" />
-</LinearLayout>
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
+            android:id="@+id/btnBack"
+            style="@style/Text.SemiBold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="12dp"
+            android:text="LOGIN"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintTop_toBottomOf="@+id/edtPass" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

@@ -40,7 +40,7 @@
             <com.finals.friendsfinder.customizes.CustomEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/edtEmail"
+                android:id="@+id/edtPhone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imgLogo"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtEmail"
+                app:layout_constraintTop_toBottomOf="@+id/edtPhone"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginHorizontal="24dp"
                 android:id="@+id/edtPass"

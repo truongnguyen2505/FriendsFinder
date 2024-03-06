@@ -59,7 +59,8 @@ enum class UserKey(val key: String) {
     IS_SHARE_LOCATION("shareLocation"),
     IS_ONLINE("online"),
     UPDATED_LOCATION("updatedLocation"),
-    ADDRESS("address")
+    ADDRESS("address"),
+    PHONE_NUMBER("phoneNumber")
 }
 
 enum class FriendKey(val key: String) {
