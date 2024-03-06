@@ -10,5 +10,6 @@ data class UserDTO(
     var userBlocking: String = "",
     var receiverBlocking: String = "",
     var typeClick: Int = 0,
+    var phone: String = "",
     var email: String = ""
 )

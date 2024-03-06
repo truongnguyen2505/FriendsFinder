@@ -18,6 +18,7 @@ import com.blankj.utilcode.util.PermissionUtils
 import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseActivity
 import com.finals.friendsfinder.databinding.ActivityMainBinding
+import com.finals.friendsfinder.models.BaseAccessToken
 import com.finals.friendsfinder.utilities.UserDefaults
 import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.addFragmentToBackstack
@@ -83,7 +84,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     private var mListLinear: List<LinearLayout> = listOf()
     private var mListTV: List<TextView> = listOf()
     private var mListImg: List<ImageView> = listOf()
-    private var fbUser: FirebaseUser? = null
     private var listUserLocation: MutableList<Location?> = mutableListOf()
     private var listUserFriend: MutableList<Friends?> = mutableListOf()
     private var listAllUser: MutableList<UserInfo?> = mutableListOf()
@@ -236,8 +236,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
     }
 
     private fun setDB() {
-        fbUser = FirebaseAuth.getInstance().currentUser
-
+        val currentUserId = BaseAccessToken.accessToken
         //get list user
         val dbReference = FirebaseDatabase.getInstance().getReference(TableKey.USERS.key)
         val dbReference2 = FirebaseDatabase.getInstance().getReference(TableKey.LOCATIONS.key)
@@ -249,7 +248,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                 for (dataSnap: DataSnapshot in snapshot.children) {
                     val user = dataSnap.getValue(UserInfo::class.java)
                     //check not me
-                    if (user?.userId.equals(fbUser?.uid)) {
+                    if (user?.userId.equals(currentUserId)) {
                         val gson = Gson()
                         val json = gson.toJson(user)
                         UserDefaults.standard.setSharedPreference(Constants.CURRENT_USER, json)
@@ -278,7 +277,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                 for (dataSnap: DataSnapshot in snapshot.children) {
                     val userLocation = dataSnap.getValue(Location::class.java)
                     //check not me
-                    if (!userLocation?.userId.equals(fbUser?.uid)) {
+                    if (!userLocation?.userId.equals(currentUserId)) {
                         listUserLocation.add(userLocation)
                     }
                 }
@@ -296,7 +295,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                 for (dataSnap: DataSnapshot in snapshot.children) {
                     val friend = dataSnap.getValue(Friends::class.java)
                     //check not me
-                    if (friend?.userId.equals(fbUser?.uid) || friend?.receiverId.equals(fbUser?.uid)) {
+                    if (friend?.userId.equals(currentUserId) || friend?.receiverId.equals(currentUserId)) {
                         if (friend?.friend == "2") {
                             listUserFriend.add(friend)
                         }

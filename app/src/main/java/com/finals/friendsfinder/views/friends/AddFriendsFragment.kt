@@ -1,14 +1,24 @@
 package com.finals.friendsfinder.views.friends
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.blankj.utilcode.util.PermissionUtils
 import com.bumptech.glide.util.Util
+import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentAddFriendsBinding
+import com.finals.friendsfinder.models.BaseAccessToken
+import com.finals.friendsfinder.models.Contact
 import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.clickWithDebounce
+import com.finals.friendsfinder.utilities.commons.Constants
 import com.finals.friendsfinder.utilities.commons.FriendKey
 import com.finals.friendsfinder.utilities.commons.UserKey
 import com.finals.friendsfinder.utilities.showActivity
@@ -40,6 +50,10 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     private var addFriendAdapter: AddFriendsAdapter? = null
     private var currentListUser: MutableList<UserInfo>? = null
     private var currentListFriend: MutableList<Friends>? = null
+    private lateinit var navListView: List<View>
+    private lateinit var navListText: List<TextView>
+    private lateinit var navListLn: List<View>
+    private var listContact = mutableListOf<Contact>()
     override fun observeHandle() {
         super.observeHandle()
         currentListUser = mutableListOf()
@@ -52,6 +66,16 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         setAdapter()
         getListUser()
         setListener()
+    }
+
+    override fun setupView() {
+        super.setupView()
+        navListLn = listOf(rootView.tabSuggest, rootView.tabPending, rootView.tabFriends)
+        navListView = listOf(rootView.viewSuggest, rootView.viewPending, rootView.viewFriends)
+        navListText = listOf(rootView.tvSuggest, rootView.tvPending, rootView.tvFriends)
+        checkPermission {
+            listContact = getNamePhoneDetails()
+        }
     }
 
     private fun setListener() {
@@ -69,7 +93,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     }
 
     private fun getListUser() {
-        val firebase = FirebaseAuth.getInstance().currentUser
+        val currentUserId = BaseAccessToken.accessToken
         val db = FirebaseDatabase.getInstance()
         val dbReference = db.getReference("Users")
         val dbReference2 = db.getReference("Friends")
@@ -80,7 +104,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                 for (dataSnap: DataSnapshot in snapshot.children) {
                     val user = dataSnap.getValue(UserInfo::class.java)
                     //check not me
-                    if (!user?.userId.equals(firebase?.uid)) {
+                    if (!user?.userId.equals(currentUserId)) {
                         currentListUser?.add(user!!)
                     }
                 }
@@ -112,6 +136,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         })
     }
 
+    private var endList = listOf<UserDTO>()
     private fun checkSetList() {
         val currentUser = Utils.shared.getUser()
         val mListUserDTO: MutableList<UserDTO> = mutableListOf()
@@ -130,6 +155,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                 userDTO.avatar = user.avatar
                 userDTO.userName = user.userName
                 userDTO.receiverId = user.userId
+                userDTO.phone = user.phoneNumber
                 userDTO.typeClick = 0
                 mListUserDTO.add(userDTO)
             }
@@ -148,6 +174,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                         userDTO.receiverId = friend.receiverId
                         userDTO.typeClick = 1
                         userDTO.email = user.email
+                        userDTO.phone = user.phoneNumber
                         mListUserDTO.add(userDTO)
                     } else if (user.userId == friend.receiverId && currentUser?.userId == friend.userId) {
                         userDTO.friendId = friend.friendId
@@ -160,6 +187,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                         userDTO.receiverId = friend.receiverId
                         userDTO.typeClick = 1
                         userDTO.email = user.email
+                        userDTO.phone = user.phoneNumber
                         mListUserDTO.add(userDTO)
                     } else {
                         userDTO.friendId = ""
@@ -172,12 +200,13 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                         userDTO.receiverId = user.userId
                         userDTO.typeClick = 0
                         userDTO.email = user.email
+                        userDTO.phone = user.phoneNumber
                         mListUserDTO.add(userDTO)
                     }
                 }
             }
         }
-        val mList = mListUserDTO.filter{
+        val mList = mListUserDTO.filter {
             it.friend != ""
         }
         val mListFrNull = mListUserDTO.filter {
@@ -186,10 +215,11 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         val finalList: MutableList<UserDTO> = mutableListOf()
         finalList.addAll(mList)
         finalList.addAll(mListFrNull)
-        val endList = finalList.distinctBy {
+        endList = finalList.distinctBy {
             it.email
         }
-        addFriendAdapter?.setList(endList)
+//        addFriendAdapter?.setList(endList)
+        setUpTab(0)
     }
 
     private fun setAdapter() {
@@ -294,6 +324,100 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
 
     override fun setupEventControl() {
         super.setupEventControl()
+        navListLn.forEachIndexed { index, view ->
+            view.clickWithDebounce {
+                navListView.forEach { v ->
+                    v.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+                }
+                navListView[index].setBackgroundColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.black
+                    )
+                )
+                //text
+                navListText.forEach { v ->
+                    v.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_6F6D6D))
+                }
+                navListText[index].setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.black
+                    )
+                )
+                setUpTab(index)
+            }
+        }
+    }
+
+    private fun setUpTab(index: Int) {
+        Log.d("Tab", " $index")
+        var listResult = mutableListOf<UserDTO>()
+        when (index) {
+            0 -> {
+                // suggest
+                endList.forEach { userDTO ->
+                    listContact.forEach { contact ->
+                        if (userDTO.phone == contact.number && userDTO.friend != "1" && userDTO.friend != "2") {
+                            listResult.add(userDTO)
+                        }
+                    }
+                }
+            }
+
+            1 -> {
+                //pending
+                listResult = endList.filter { it.friend == "1" }.toMutableList()
+            }
+
+            else -> {
+                //friends
+                listResult = endList.filter { it.friend == "2" }.toMutableList()
+            }
+        }
+        addFriendAdapter?.setList(listResult)
+    }
+
+    private fun checkPermission(onSuccess: (() -> Unit)) {
+        PermissionUtils.permission(*Constants.CONTACT_PER)
+            .callback(object : PermissionUtils.FullCallback {
+                override fun onGranted(granted: MutableList<String>) {
+                    onSuccess.invoke()
+                }
+
+                override fun onDenied(
+                    deniedForever: MutableList<String>,
+                    denied: MutableList<String>,
+                ) {
+                    //showMessage("Please allow permission Location")
+                }
+            }).request()
+
+    }
+
+    @SuppressLint("Range")
+    fun getNamePhoneDetails(): MutableList<Contact> {
+        val names = mutableListOf<Contact>()
+        val cr = activity?.contentResolver
+        val cur = cr?.query(
+            ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
+            null, null, null
+        )
+        if ((cur?.count ?: 0) > 0) {
+            while (cur?.moveToNext() == true) {
+                val id =
+                    cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NAME_RAW_CONTACT_ID))
+                        ?: ""
+                val name =
+                    cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                        ?: ""
+                val number =
+                    cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        ?: ""
+                names.add(Contact(id, name, number.replace(" ", "")))
+            }
+        }
+        return names
     }
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentAddFriendsBinding {
