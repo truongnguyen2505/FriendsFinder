@@ -53,6 +53,10 @@ class AddFriendsAdapter(
         listUserDTO.addAll(newList)
         notifyDataSetChanged()
     }
+    fun clearList() {
+        listUserDTO.clear()
+        notifyDataSetChanged()
+    }
 
 //    fun setListFriend(mList: List<Friends>) {
 //        this.listFriend.clear()

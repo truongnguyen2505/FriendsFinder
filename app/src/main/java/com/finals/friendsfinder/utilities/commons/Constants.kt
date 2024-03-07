@@ -22,6 +22,9 @@ class Constants {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
+        val CONTACT_PER = arrayOf(
+            Manifest.permission.READ_CONTACTS
+        )
 
         fun isTablet(context: Context): Boolean {
             return context.resources
