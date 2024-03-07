@@ -113,4 +113,16 @@
         android:layout_marginTop="24dp"
         tools:listitem="@layout/item_add_friends" />
 
+    <com.finals.friendsfinder.customizes.CustomTextViewFonts
+        android:id="@+id/tvNoData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No data"
+        android:visibility="gone"
+        android:textSize="16sp"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:drawableTop="@drawable/ic_no_data"
+        android:drawablePadding="6dp"/>
+
 </RelativeLayout>

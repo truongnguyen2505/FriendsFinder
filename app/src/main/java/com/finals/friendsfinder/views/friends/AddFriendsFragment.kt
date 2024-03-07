@@ -1,41 +1,39 @@
 package com.finals.friendsfinder.views.friends
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.PermissionUtils
-import com.bumptech.glide.util.Util
 import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentAddFriendsBinding
 import com.finals.friendsfinder.dialogs.NotifyDialog
 import com.finals.friendsfinder.models.BaseAccessToken
-import com.finals.friendsfinder.models.Contact
 import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.Constants
 import com.finals.friendsfinder.utilities.commons.FriendKey
-import com.finals.friendsfinder.utilities.commons.UserKey
-import com.finals.friendsfinder.utilities.showActivity
 import com.finals.friendsfinder.views.friends.adapter.AddFriendsAdapter
 import com.finals.friendsfinder.views.friends.data.Friends
 import com.finals.friendsfinder.views.friends.data.UserDTO
 import com.finals.friendsfinder.views.friends.data.UserInfo
-import com.finals.friendsfinder.views.login.LoginActivity
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import okhttp3.internal.filterList
-import kotlin.math.log
+
 
 class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
 
@@ -54,7 +52,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     private lateinit var navListView: List<View>
     private lateinit var navListText: List<TextView>
     private lateinit var navListLn: List<View>
-    private var listContact = listOf<Contact>()
+    private var listContact = listOf<UserDTO>()
     override fun observeHandle() {
         super.observeHandle()
         currentListUser = mutableListOf()
@@ -74,9 +72,30 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         navListLn = listOf(rootView.tabSuggest, rootView.tabPending, rootView.tabFriends)
         navListView = listOf(rootView.viewSuggest, rootView.viewPending, rootView.viewFriends)
         navListText = listOf(rootView.tvSuggest, rootView.tvPending, rootView.tvFriends)
-        checkPermission {
+        if (checkPermission()) {
             listContact = getNamePhoneDetails()
+        } else {
+            showMessage(
+                title = "Confirm",
+                message = "Do you want to make friends with the friends in your contacts?",
+                txtBtnOk = "Yes",
+                enableCancel = true,
+                listener = object : NotifyDialog.OnDialogListener {
+                    override fun onClickButton(isOk: Boolean) {
+                        if (isOk) {
+                            checkPermission {
+                                listContact = getNamePhoneDetails()
+                            }
+                        }
+                    }
+                })
         }
+    }
+
+    private fun checkPermission(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            requireContext(), Manifest.permission.READ_CONTACTS
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun setListener() {
@@ -269,7 +288,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
             }
         }
         addFriendAdapter?.removeFriend = { info, type ->
-            if(type == 1){
+            if (type == 1) {
                 showMessage(
                     title = "Confirm",
                     message = "Are you sure you want to cancel this friend request?",
@@ -282,7 +301,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                             }
                         }
                     })
-            }else{
+            } else {
                 showMessage(
                     title = "Confirm",
                     message = "Are you sure you want to unfriend this person?",
@@ -297,6 +316,23 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                     })
             }
 
+        }
+        addFriendAdapter?.shareApp = { info, _ ->
+            showMessage(
+                title = "Confirm",
+                message = "You will share the application via phone messages, do you agree?",
+                txtBtnOk = "Yes",
+                enableCancel = true,
+                listener = object : NotifyDialog.OnDialogListener {
+                    override fun onClickButton(isOk: Boolean) {
+                        if (isOk) {
+                            val uri = Uri.parse("smsto:${info.phone}")
+                            val intent = Intent(Intent.ACTION_SENDTO, uri)
+                            intent.putExtra("sms_body", "${info.userName} invite you to participate in using the application Friends Finder")
+                            startActivity(intent)
+                        }
+                    }
+                })
         }
         rootView.rvListUser.apply {
             layoutManager =
@@ -358,7 +394,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         val hasMap: HashMap<String, String> = HashMap()
         hasMap[FriendKey.FRIEND_ID.key] = keyId
         hasMap[FriendKey.USERID.key] = localInfo?.userId ?: ""
-        hasMap[FriendKey.RECEIVER_ID.key] = info.receiverId ?: ""
+        hasMap[FriendKey.RECEIVER_ID.key] = info.receiverId
         hasMap[FriendKey.IS_FRIEND.key] = "1"
         hasMap[FriendKey.USER_BLOCKING.key] = "0"
         hasMap[FriendKey.RECEIVER_BLOCKING.key] = "0"
@@ -405,10 +441,15 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         when (index) {
             0 -> {
                 // suggest
-                endList.forEach { userDTO ->
-                    listContact.forEach { contact ->
-                        if (userDTO.phone == contact.number && userDTO.friend != "1" && userDTO.friend != "2") {
-                            listResult.add(userDTO)
+                    endList.forEach { userDTO ->
+                        listContact.forEach { contact ->
+                        if (userDTO.friend != "1" && userDTO.friend != "2") {
+                            if (userDTO.phone == contact.phone) {
+                                listResult.add(userDTO)
+                            } else {
+                                contact.friend = "4"
+                                listResult.add(contact)
+                            }
                         }
                     }
                 }
@@ -424,6 +465,8 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                 listResult = endList.filter { it.friend == "2" }.toMutableList()
             }
         }
+        rootView.tvNoData.isVisible = listResult.isEmpty()
+        rootView.rvListUser.isVisible = listResult.isNotEmpty()
         addFriendAdapter?.setList(listResult)
     }
 
@@ -445,8 +488,8 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     }
 
     @SuppressLint("Range")
-    fun getNamePhoneDetails(): List<Contact> {
-        val names = mutableListOf<Contact>()
+    fun getNamePhoneDetails(): List<UserDTO> {
+        val names = mutableListOf<UserDTO>()
         val cr = activity?.contentResolver
         val cur = cr?.query(
             ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
@@ -461,13 +504,13 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                     cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
                         ?: ""
                 val number =
-                    cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                        ?: ""
-                names.add(Contact(id, name, number.replace(" ", "")))
+                    (cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        ?: "").replace(" ", "")
+                names.add(UserDTO(userName = name, phone =  number))
             }
         }
         val newList = names.distinctBy {
-            it.id
+            it.phone
         }
         return newList
     }
