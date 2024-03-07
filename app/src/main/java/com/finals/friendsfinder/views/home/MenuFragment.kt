@@ -13,6 +13,7 @@ import com.finals.friendsfinder.utilities.commons.Constants
 import com.finals.friendsfinder.utilities.commons.TableKey
 import com.finals.friendsfinder.utilities.showActivity
 import com.finals.friendsfinder.views.home.menu.ChangePasswordFragment
+import com.finals.friendsfinder.views.home.menu.MyAccountFragment
 import com.finals.friendsfinder.views.home.menu.SettingProfile
 import com.finals.friendsfinder.views.login.LoginActivity
 import com.google.firebase.database.FirebaseDatabase
@@ -57,6 +58,9 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
             }
             btnSetting.clickWithDebounce {
                 activity?.addFragmentToBackstack(android.R.id.content, SettingProfile.newInstance())
+            }
+            btnAccount.clickWithDebounce {
+                activity?.addFragmentToBackstack(android.R.id.content, MyAccountFragment.newInstance())
             }
         }
     }

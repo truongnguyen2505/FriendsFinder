@@ -29,6 +29,7 @@ class AddFriendsAdapter(
     * else -> 3 */
     private var listUserDTO: MutableList<UserDTO> = mutableListOf()
     var addFriend: ((UserDTO, typeClick: Int) -> Unit)? = null
+    var shareApp: ((UserDTO, typeClick: Int) -> Unit)? = null
     var removeFriend: ((UserDTO, typeClick: Int) -> Unit)? = null
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -78,9 +79,16 @@ class AddFriendsAdapter(
                     //case current user is receiver
                     checkFriend(position, "Accept")
                 } else {
-                    btnAdd.text = "Add"
-                    btnAdd.clickWithDebounce {
-                        addFriend?.invoke(item, 3)
+                    if (item.friend == "4"){
+                        btnAdd.text = "Share"
+                        btnAdd.clickWithDebounce {
+                            shareApp?.invoke(item, 4)
+                        }
+                    }else{
+                        btnAdd.text = "Add"
+                        btnAdd.clickWithDebounce {
+                            addFriend?.invoke(item, 3)
+                        }
                     }
                 }
                 if (item.avatar.isEmpty())
@@ -128,6 +136,13 @@ class AddFriendsAdapter(
                             } else {
                                 addFriend?.invoke(listUserDTO[pos], 3)
                             }
+                        }
+                    }
+
+                    "4" -> {
+                        btnAdd.text = "Share"
+                        btnAdd.clickWithDebounce {
+                            shareApp?.invoke(listUserDTO[pos], 4)
                         }
                     }
 
