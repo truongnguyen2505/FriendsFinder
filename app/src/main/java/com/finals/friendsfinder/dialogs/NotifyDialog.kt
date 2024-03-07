@@ -35,6 +35,13 @@ class NotifyDialog private constructor(context: Context) :
         return this
     }
 
+
+    fun setTextBtnOk(btnOk: String?): NotifyDialog {
+        rootView.btnOK.text = btnOk
+        return this
+    }
+
+
     override fun notFoundView() {
 
     }

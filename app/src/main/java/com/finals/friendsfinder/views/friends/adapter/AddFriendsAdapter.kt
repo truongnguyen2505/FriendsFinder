@@ -121,10 +121,10 @@ class AddFriendsAdapter(
                         btnAdd.clickWithDebounce {
                             if (currentUser?.userId == listUserDTO[pos].userId && currentUser.userId != listUserDTO[pos].receiverId) {
                                 //case current user is sender
-                                removeFriend?.invoke(listUserDTO[pos], 1)
+                                removeFriend?.invoke(listUserDTO[pos], 2)
                             } else if (currentUser?.userId == listUserDTO[pos].receiverId && currentUser.userId != listUserDTO[pos].userId) {
                                 //case current user is receiver
-                                removeFriend?.invoke(listUserDTO[pos], 1)
+                                removeFriend?.invoke(listUserDTO[pos], 2)
                             } else {
                                 addFriend?.invoke(listUserDTO[pos], 3)
                             }

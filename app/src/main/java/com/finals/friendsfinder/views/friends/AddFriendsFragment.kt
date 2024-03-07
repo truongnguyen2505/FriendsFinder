@@ -233,18 +233,29 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
             when (type) {
                 1 -> {
                     // user is sender
-                    updateFriend(info, type)
                 }
 
                 2 -> {
                     // user is receiver
-                    updateFriend(info, type)
+                    showMessage(
+                        title = "Confirm",
+                        message = "Are you sure you want to accept this friend request?",
+                        txtBtnOk = "Yes",
+                        enableCancel = true,
+                        listener = object : NotifyDialog.OnDialogListener {
+                            override fun onClickButton(isOk: Boolean) {
+                                if (isOk) {
+                                    updateFriend(info, type)
+                                }
+                            }
+                        })
                 }
 
                 else -> {
                     showMessage(
                         title = "Confirm",
                         message = "Are you sure you want to be friends with this person?",
+                        txtBtnOk = "Yes",
                         enableCancel = true,
                         listener = object : NotifyDialog.OnDialogListener {
                             override fun onClickButton(isOk: Boolean) {
@@ -258,17 +269,34 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
             }
         }
         addFriendAdapter?.removeFriend = { info, type ->
-            showMessage(
-                title = "Confirm",
-                message = "Are you sure you want to unfriend this person?",
-                enableCancel = true,
-                listener = object : NotifyDialog.OnDialogListener {
-                    override fun onClickButton(isOk: Boolean) {
-                        if (isOk) {
-                            removeFriend(info)
+            if(type == 1){
+                showMessage(
+                    title = "Confirm",
+                    message = "Are you sure you want to cancel this friend request?",
+                    txtBtnOk = "Yes",
+                    enableCancel = true,
+                    listener = object : NotifyDialog.OnDialogListener {
+                        override fun onClickButton(isOk: Boolean) {
+                            if (isOk) {
+                                removeFriend(info)
+                            }
                         }
-                    }
-                })
+                    })
+            }else{
+                showMessage(
+                    title = "Confirm",
+                    message = "Are you sure you want to unfriend this person?",
+                    txtBtnOk = "Yes",
+                    enableCancel = true,
+                    listener = object : NotifyDialog.OnDialogListener {
+                        override fun onClickButton(isOk: Boolean) {
+                            if (isOk) {
+                                removeFriend(info)
+                            }
+                        }
+                    })
+            }
+
         }
         rootView.rvListUser.apply {
             layoutManager =

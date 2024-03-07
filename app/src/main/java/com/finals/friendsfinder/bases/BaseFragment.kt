@@ -181,6 +181,24 @@ public abstract class BaseFragment<VB : ViewBinding> : Fragment() {
         }
     }
 
+    open fun showMessage(
+        title: String = "",
+        message: String = "",
+        txtBtnOk: String = "",
+        enableCancel: Boolean = false,
+        listener: NotifyDialog.OnDialogListener?,
+    ) {
+        context?.let {
+            NotifyDialog.instance(it)
+                .setTitle(title)
+                .setListener(listener)
+                .setMessage(message)
+                .enableCancel(enableCancel)
+                .setTextBtnOk(txtBtnOk)
+                .show()
+        }
+    }
+
     open fun showQuestion(
         title: String = "",
         message: String = "",
