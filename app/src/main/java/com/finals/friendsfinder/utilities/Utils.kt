@@ -14,6 +14,8 @@ import com.finals.friendsfinder.utilities.commons.Constants
 import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.google.common.reflect.TypeToken
 import com.google.gson.Gson
+import com.google.zxing.Result
+import com.google.zxing.ResultMetadataType
 import java.lang.reflect.Type
 
 import java.security.MessageDigest
@@ -220,6 +222,19 @@ class Utils {
             e.printStackTrace()
             ""
         }
+    }
+
+    fun getRawBytes(result: Result): ByteArray? {
+        val metadata = result.resultMetadata ?: return null
+        val segments = metadata[ResultMetadataType.BYTE_SEGMENTS] ?: return null
+        var bytes = ByteArray(0)
+        @Suppress("UNCHECKED_CAST")
+        for (seg in segments as Iterable<ByteArray>) {
+            bytes += seg
+        }
+        // byte segments can never be shorter than the text.
+        // Zxing cuts off content prefixes like "WIFI:"
+        return if (bytes.size >= result.text.length) bytes else null
     }
 
 }

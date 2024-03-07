@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import androidx.core.widget.addTextChangedListener
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentSearchBinding
+import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.views.friends.data.UserInfo
 
@@ -53,6 +54,12 @@ class SearchFragment : BaseFragment<FragmentSearchBinding>() {
                 } else {
 
                 }
+            }
+            btnScan.clickWithDebounce {
+                activity?.addFragmentToBackstack(
+                    android.R.id.content,
+                    QRCodeFragment.newInstance(ArrayList(listUser))
+                )
             }
         }
     }

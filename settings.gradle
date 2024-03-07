@@ -2,3 +2,4 @@ rootProject.name = "Friends Finder"
 include ':app'
 include ':utilcode'
 include ':compressor'
+include ':zxing-android-embedded'

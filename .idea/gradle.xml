@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/compressor" />
             <option value="$PROJECT_DIR$/utilcode" />
+            <option value="$PROJECT_DIR$/zxing-android-embedded" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

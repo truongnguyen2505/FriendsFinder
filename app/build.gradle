@@ -104,7 +104,6 @@ android {
 }
 
 dependencies {
-
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.6.0'
@@ -146,4 +145,10 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
 
+    implementation 'com.google.zxing:core:3.4.1'
+    implementation 'me.dm7.barcodescanner:zxing:1.9.13'
+
+    implementation 'com.makeramen:roundedimageview:2.3.0'
+
+    implementation 'com.github.alexzhirkevich:custom-qr-generator:2.0.0-alpha01'
 }
