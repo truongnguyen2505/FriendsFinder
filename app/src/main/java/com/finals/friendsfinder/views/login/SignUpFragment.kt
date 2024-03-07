@@ -222,7 +222,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
                 //open login activity
                 LoadingDialog.dismiss()
                 //Log.d(TAG, "onVerificationCompleted:3 ")
-                showMessage("Sign up successfully!", "", object : NotifyDialog.OnDialogListener {
+                showMessage("Sign up successfully!", "", false, object : NotifyDialog.OnDialogListener {
                     override fun onClickButton(isOk: Boolean) {
                         activity?.supportFragmentManager?.popBackStack()
                     }

@@ -168,6 +168,7 @@ public abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     open fun showMessage(
         title: String = "",
         message: String = "",
+        enableCancel: Boolean = false,
         listener: NotifyDialog.OnDialogListener?,
     ) {
         context?.let {
@@ -175,7 +176,7 @@ public abstract class BaseFragment<VB : ViewBinding> : Fragment() {
                 .setTitle(title)
                 .setListener(listener)
                 .setMessage(message)
-                .enableCancel(false)
+                .enableCancel(enableCancel)
                 .show()
         }
     }

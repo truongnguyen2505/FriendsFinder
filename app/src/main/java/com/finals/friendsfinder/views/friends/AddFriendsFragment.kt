@@ -14,6 +14,7 @@ import com.bumptech.glide.util.Util
 import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentAddFriendsBinding
+import com.finals.friendsfinder.dialogs.NotifyDialog
 import com.finals.friendsfinder.models.BaseAccessToken
 import com.finals.friendsfinder.models.Contact
 import com.finals.friendsfinder.utilities.Utils
@@ -53,7 +54,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     private lateinit var navListView: List<View>
     private lateinit var navListText: List<TextView>
     private lateinit var navListLn: List<View>
-    private var listContact = mutableListOf<Contact>()
+    private var listContact = listOf<Contact>()
     override fun observeHandle() {
         super.observeHandle()
         currentListUser = mutableListOf()
@@ -216,7 +217,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         finalList.addAll(mList)
         finalList.addAll(mListFrNull)
         endList = finalList.distinctBy {
-            it.email
+            it.phone
         }
 //        addFriendAdapter?.setList(endList)
         setUpTab(0)
@@ -241,13 +242,33 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                 }
 
                 else -> {
-                    createFriend(info)
+                    showMessage(
+                        title = "Confirm",
+                        message = "Are you sure you want to be friends with this person?",
+                        enableCancel = true,
+                        listener = object : NotifyDialog.OnDialogListener {
+                            override fun onClickButton(isOk: Boolean) {
+                                if (isOk) {
+                                    createFriend(info)
+                                }
+                            }
+                        })
                 }
 
             }
         }
         addFriendAdapter?.removeFriend = { info, type ->
-            removeFriend(info)
+            showMessage(
+                title = "Confirm",
+                message = "Are you sure you want to unfriend this person?",
+                enableCancel = true,
+                listener = object : NotifyDialog.OnDialogListener {
+                    override fun onClickButton(isOk: Boolean) {
+                        if (isOk) {
+                            removeFriend(info)
+                        }
+                    }
+                })
         }
         rootView.rvListUser.apply {
             layoutManager =
@@ -396,7 +417,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     }
 
     @SuppressLint("Range")
-    fun getNamePhoneDetails(): MutableList<Contact> {
+    fun getNamePhoneDetails(): List<Contact> {
         val names = mutableListOf<Contact>()
         val cr = activity?.contentResolver
         val cur = cr?.query(
@@ -417,7 +438,10 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                 names.add(Contact(id, name, number.replace(" ", "")))
             }
         }
-        return names
+        val newList = names.distinctBy {
+            it.id
+        }
+        return newList
     }
 
     override fun getViewBinding(inflater: LayoutInflater): FragmentAddFriendsBinding {
