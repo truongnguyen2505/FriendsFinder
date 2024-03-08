@@ -318,6 +318,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
 
         }
         addFriendAdapter?.shareApp = { info, _ ->
+            val currentUser = Utils.shared.getUser()
             showMessage(
                 title = "Confirm",
                 message = "You will share the application via phone messages, do you agree?",
@@ -328,7 +329,10 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                         if (isOk) {
                             val uri = Uri.parse("smsto:${info.phone}")
                             val intent = Intent(Intent.ACTION_SENDTO, uri)
-                            intent.putExtra("sms_body", "${info.userName} invite you to participate in using the application Friends Finder")
+                            intent.putExtra(
+                                "sms_body",
+                                "${currentUser?.userName} invite you to participate in using the application Friends Finder"
+                            )
                             startActivity(intent)
                         }
                     }
@@ -450,6 +454,11 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                                 contact.friend = "4"
                                 listResult.add(contact)
                             }
+                        }else{
+                            if (userDTO.phone != contact.phone){
+                                contact.friend = "4"
+                                listResult.add(contact)
+                            }
                         }
                     }
                 }
@@ -506,7 +515,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                 val number =
                     (cur.getString(cur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
                         ?: "").replace(" ", "")
-                names.add(UserDTO(userName = name, phone =  number))
+                names.add(UserDTO(userName = name, phone = number))
             }
         }
         val newList = names.distinctBy {

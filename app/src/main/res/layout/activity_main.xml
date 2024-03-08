@@ -17,27 +17,27 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginTop="12dp">
+
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btnSearch"
             android:layout_alignBottom="@+id/btnFriend"
             android:layout_marginEnd="12dp"
             android:layout_toStartOf="@+id/btnFriend"
-            app:srcCompat="@drawable/edt_search_img"
-            />
+            app:srcCompat="@drawable/edt_search_img" />
 
         <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/btnFriend"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:id="@+id/btnFriend"
             android:layout_alignParentEnd="true"
-            app:srcCompat="@drawable/ic_user_group"
-            />
+            app:srcCompat="@drawable/ic_user_group" />
 
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -134,5 +134,24 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/btnMyLocation"
+        android:layout_width="78dp"
+        android:layout_height="78dp"
+        android:layout_above="@+id/nav"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="28dp"
+        android:background="@drawable/bg_oval_cl_7a7a7a">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_location_128" />
+
+
+    </FrameLayout>
 
 </RelativeLayout>

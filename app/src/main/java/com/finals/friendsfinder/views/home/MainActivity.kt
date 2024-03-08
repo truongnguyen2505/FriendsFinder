@@ -57,12 +57,13 @@ import com.google.gson.Gson
 class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
 
     companion object {
-        const val TIME_UPDATE_LOCATION = 60000 * 5L
+        const val TIME_UPDATE_LOCATION = 60000 * 10L
 
         //const val TIME_UPDATE_LOCATION = 30000 * 1L
         const val TAG = "MAP_ACTIVITY"
     }
 
+    private var firstCheckPermission = true
     private var isFirstZoom = true
     private var mMap: GoogleMap? = null
     private var mapFragment: SupportMapFragment? = null
@@ -72,6 +73,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
             super.onLocationResult(locationResult)
             val lat = locationResult.lastLocation?.latitude ?: 0.0
             val lng = locationResult.lastLocation?.longitude ?: 0.0
+            firstCheckPermission = false
             createLocationDB(lat, lng)
             // Log.d(TAG, "onLocationResult: $lat $lng $isFirstZoom")
             if (isFirstZoom) {
@@ -111,6 +113,21 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                     // do if success
                 }
             }
+        }
+    }
+
+    fun getMyLocation() {
+        checkPermission {
+            mMap?.let {
+                it.isMyLocationEnabled = true
+                it.uiSettings.isMyLocationButtonEnabled = false
+            }
+            val location = mMap?.myLocation
+            val latLng = LatLng(
+                location?.latitude ?: 0.0,
+                location?.longitude ?: 0.0
+            )
+            updateMyLocation(latLng)
         }
     }
 
@@ -238,6 +255,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                     android.R.id.content,
                     SearchFragment.newInstance(ArrayList(listAllUser))
                 )
+            }
+            btnMyLocation.clickWithDebounce {
+                if (firstCheckPermission) {
+                    checkPermission {
+                        createLocationRequest()
+                    }
+                } else getMyLocation()
             }
         }
     }
@@ -511,6 +535,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
             mMap?.apply {
                 isMyLocationEnabled = true
                 uiSettings.isMyLocationButtonEnabled = false
+                uiSettings.isCompassEnabled = false
             }
             createLocationRequest()
         }

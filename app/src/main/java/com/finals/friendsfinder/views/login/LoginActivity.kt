@@ -1,5 +1,7 @@
 package com.finals.friendsfinder.views.login
 
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseActivity
@@ -87,22 +89,24 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             } else if (phone.isNotEmpty() && pass.isEmpty()) {
                 edtPass.setMessageError("Password must not be empty!")
             } else {
-                //LoadingDialog.show(this@LoginActivity)
+                LoadingDialog.show(this@LoginActivity)
                 val newList = listUser.filter {
                     it.phoneNumber == phone
                 }
-                if (newList.isEmpty()){
-                    showMessage("Not exist this account!\n Please, try again!")
-                }else{
-                    if (newList[0].phoneNumber.equals(phone, true) && newList[0].password.equals(pass, true)){
-                        BaseAccessToken.accessToken = newList[0].userId
-                        showActivity<MainActivity>(goRoot = true)
-                    }else if (newList[0].phoneNumber.equals(phone, true) && !newList[0].password.equals(pass, true)){
-                        showMessage("Phone number or password is wrong!\n Please, try again!")
-                    }else{
+                Handler(Looper.getMainLooper()).postDelayed({
+                    if (newList.isEmpty()){
                         showMessage("Not exist this account!\n Please, try again!")
+                    }else{
+                        if (newList[0].phoneNumber.equals(phone, true) && newList[0].password.equals(pass, true)){
+                            BaseAccessToken.accessToken = newList[0].userId
+                            showActivity<MainActivity>(goRoot = true)
+                        }else if (newList[0].phoneNumber.equals(phone, true) && !newList[0].password.equals(pass, true)){
+                            showMessage("Phone number or password is wrong!\n Please, try again!")
+                        }else{
+                            showMessage("Not exist this account!\n Please, try again!")
+                        }
                     }
-                }
+                }, 1500L)
             }
         }
 
