@@ -1,19 +1,20 @@
 package com.finals.friendsfinder.views.home
 
-import android.graphics.Color
+import android.Manifest
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.core.content.ContextCompat
+import com.blankj.utilcode.util.PermissionUtils
+import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
 import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentMyQrBinding
-import com.finals.friendsfinder.utilities.UserDefaults
 import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.clickWithDebounce
-import com.finals.friendsfinder.utilities.commons.Constants
-import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.github.alexzhirkevich.customqrgenerator.QrData
 import com.github.alexzhirkevich.customqrgenerator.vector.QrCodeDrawable
 import com.github.alexzhirkevich.customqrgenerator.vector.QrVectorOptions
@@ -27,6 +28,8 @@ import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorLogoPadd
 import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorLogoShape
 import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorPixelShape
 import com.github.alexzhirkevich.customqrgenerator.vector.style.QrVectorShapes
+import java.io.File
+
 
 class MyQRFragment : BaseFragment<FragmentMyQrBinding>() {
 
@@ -39,6 +42,12 @@ class MyQRFragment : BaseFragment<FragmentMyQrBinding>() {
             }
         }
     }
+
+    private val readPermissions = arrayOf(
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    )
+    private var mUri: Uri? = null
+    private var mFile: File? = null
 
     override fun setupView() {
         super.setupView()
@@ -98,7 +107,53 @@ class MyQRFragment : BaseFragment<FragmentMyQrBinding>() {
 
     override fun bindData() {
         super.bindData()
-        with(rootView){
+        with(rootView) {
+            btnDownload.clickWithDebounce {
+                if (mUri != null || mFile != null){
+                    ToastUtils.showShort("This photo has been downloaded!")
+                    return@clickWithDebounce
+                }
+                val bitmap = Utils.shared.getBitmapFromNestedScrollView(
+                    requireContext(),
+                    rootView.nestedScrollView
+                )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    Utils.shared.saveBitmapImage(
+                        requireContext(),
+                        bitmap,
+                        inSuccess = { uri, file ->
+                            mUri = uri
+                            mFile = file
+                            if (uri != null || file != null) {
+                                ToastUtils.showShort("Download image successfully!")
+                            } else {
+                                ToastUtils.showShort("Download image fail!")
+                            }
+                            //Log.d("TAG", "saveBitmapImage: save success $uri nnnnn $file")
+                        })
+                } else {
+                    PermissionUtils.permission(*readPermissions)
+                        .callback(object : PermissionUtils.SimpleCallback {
+                            override fun onGranted() {
+                                Utils.shared.saveBitmapImage(
+                                    requireContext(),
+                                    bitmap,
+                                    inSuccess = { uri, file ->
+                                        mUri = uri
+                                        mFile = file
+                                        if (uri != null || file != null) {
+                                            ToastUtils.showShort("Download image successfully!")
+                                        } else {
+                                            ToastUtils.showShort("Download image fail!")
+                                        }
+                                    })
+                            }
+
+                            override fun onDenied() {
+                            }
+                        }).request()
+                }
+            }
             layoutHeader.imgBack.clickWithDebounce {
                 activity?.supportFragmentManager?.popBackStack()
             }

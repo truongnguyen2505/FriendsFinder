@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentMenuBinding
+import com.finals.friendsfinder.dialogs.NotifyDialog
 import com.finals.friendsfinder.models.BaseAccessToken
 import com.finals.friendsfinder.utilities.UserDefaults
 import com.finals.friendsfinder.utilities.Utils
@@ -34,17 +35,29 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
         super.bindData()
         with(rootView) {
             btnLogout.clickWithDebounce {
-                (activity as? MainActivity)?.setLogout(true)
-                val user = Utils.shared.getUser()
-                user?.online = "0"
-                FirebaseDatabase.getInstance().getReference(TableKey.USERS.key)
-                    .child("${user?.userId}").setValue(user).addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            BaseAccessToken.accessToken = ""
-                            UserDefaults.standard.setSharedPreference(Constants.CURRENT_USER, "")
-                            activity?.showActivity<LoginActivity>(goRoot = true)
+                showMessage(title = "Confirm",
+                    message = "Are you sure you want to sign out of this device?",
+                    txtBtnOk = "Yes",
+                    enableCancel = true,
+                    listener = object : NotifyDialog.OnDialogListener {
+                        override fun onClickButton(isOk: Boolean) {
+                            if (isOk) {
+                                (activity as? MainActivity)?.setLogout(true)
+                                val user = Utils.shared.getUser()
+                                user?.online = "0"
+                                FirebaseDatabase.getInstance().getReference(TableKey.USERS.key)
+                                    .child("${user?.userId}").setValue(user).addOnCompleteListener {
+                                        BaseAccessToken.accessToken = ""
+                                        UserDefaults.standard.setSharedPreference(
+                                            Constants.CURRENT_USER,
+                                            ""
+                                        )
+                                        activity?.showActivity<LoginActivity>(goRoot = true)
+                                    }
+                            }
                         }
                     }
+                )
             }
             btnClose.clickWithDebounce {
                 onBackEvent?.invoke()
@@ -60,7 +73,13 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
                 activity?.addFragmentToBackstack(android.R.id.content, SettingProfile.newInstance())
             }
             btnAccount.clickWithDebounce {
-                activity?.addFragmentToBackstack(android.R.id.content, MyAccountFragment.newInstance())
+                activity?.addFragmentToBackstack(
+                    android.R.id.content,
+                    MyAccountFragment.newInstance()
+                )
+            }
+            btnMyQr.clickWithDebounce {
+                activity?.addFragmentToBackstack(android.R.id.content, MyQRFragment.newInstance())
             }
         }
     }
