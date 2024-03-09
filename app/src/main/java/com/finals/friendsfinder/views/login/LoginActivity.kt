@@ -2,17 +2,12 @@ package com.finals.friendsfinder.views.login
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
-import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseActivity
 import com.finals.friendsfinder.customizes.LoadingDialog
 import com.finals.friendsfinder.databinding.ActivityLoginBinding
 import com.finals.friendsfinder.models.BaseAccessToken
-import com.finals.friendsfinder.utilities.UserDefaults
-import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
-import com.finals.friendsfinder.utilities.commons.Constants
 import com.finals.friendsfinder.utilities.commons.TableKey
 import com.finals.friendsfinder.utilities.showActivity
 import com.finals.friendsfinder.views.friends.data.UserInfo
@@ -21,7 +16,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.gson.Gson
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
@@ -71,6 +65,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     private fun setListener() {
         with(rootView) {
             edtPass.setTypePassWord()
+            edtPass.showImagePassword(true)
             btnLogin.clickWithDebounce {
                 loginNow()
             }
@@ -94,6 +89,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     it.phoneNumber == phone
                 }
                 Handler(Looper.getMainLooper()).postDelayed({
+                    LoadingDialog.dismiss()
                     if (newList.isEmpty()){
                         showMessage("Not exist this account!\n Please, try again!")
                     }else{

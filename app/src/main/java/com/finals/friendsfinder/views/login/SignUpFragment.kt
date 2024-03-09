@@ -66,6 +66,8 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>() {
             edtConfirmPass.setTypePassWord()
             edtPhone.setInputType(InputType.TYPE_CLASS_PHONE)
             edtPhone.setFilterEdt(10)
+            edtPass.showImagePassword(true)
+            edtConfirmPass.showImagePassword(true)
             edtPass.setOnFocusChangeListener { view, b ->
                 if (!b)
                     edtPass.hideMessageError()

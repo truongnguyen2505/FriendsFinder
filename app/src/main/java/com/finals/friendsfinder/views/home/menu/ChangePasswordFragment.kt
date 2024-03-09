@@ -51,8 +51,11 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>() {
     private fun setListener() {
         with(rootView) {
             edtOldPass.setTypePassWord()
+            edtOldPass.showImagePassword(true)
             edtNewPass.setTypePassWord()
+            edtNewPass.showImagePassword(true)
             edtNewConfirmPass.setTypePassWord()
+            edtNewConfirmPass.showImagePassword(true)
             btnChange.clickWithDebounce {
                 changePass()
             }
@@ -150,8 +153,11 @@ class ChangePasswordFragment : BaseFragment<FragmentChangePasswordBinding>() {
     private fun setText() {
         with(rootView) {
             edtOldPass.setLabel("Old password")
+            edtOldPass.setHint("Input old password")
             edtNewPass.setLabel("New password")
+            edtNewPass.setHint("Input new password")
             edtNewConfirmPass.setLabel("Confirm new password")
+            edtNewConfirmPass.setHint("Input confirm new password")
         }
     }
 

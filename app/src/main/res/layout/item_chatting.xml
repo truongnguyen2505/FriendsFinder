@@ -9,7 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-
         <com.finals.friendsfinder.customizes.CircleImageView
             android:layout_width="60dp"
             android:layout_height="60dp"
@@ -48,16 +47,6 @@
                 android:textSize="14sp"
                 tools:text="Nguyen Duc Truong" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginHorizontal="24dp"
-            android:layout_below="@+id/imgAvatar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@color/color_text_light"
-            android:layout_height="1dp"/>
     </RelativeLayout>
 
 </FrameLayout>

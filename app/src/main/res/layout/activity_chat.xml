@@ -15,7 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rvChatting"
-        tools:listitem="@layout/item_chatting"
         android:layout_above="@+id/layoutMess"
         android:layout_below="@+id/layoutHeader"
         android:layout_marginTop="8dp"/>
