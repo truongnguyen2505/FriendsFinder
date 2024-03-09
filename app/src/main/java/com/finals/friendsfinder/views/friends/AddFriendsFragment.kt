@@ -182,6 +182,15 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         } else {
             currentListUser?.map { user ->
                 currentListFriend?.map { friend ->
+                    var checkList = mListUserDTO.filter {
+                        it.phone == user.phoneNumber
+                    }
+                    if (checkList.isNotEmpty()) {
+                        for (i in checkList.indices) {
+                            mListUserDTO.remove(checkList[i])
+                        }
+                        checkList = listOf()
+                    }
                     val userDTO = UserDTO()
                     if (user.userId == friend.userId && currentUser?.userId == friend.receiverId) {
                         userDTO.friendId = friend.friendId
@@ -226,18 +235,14 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                 }
             }
         }
-        val mList = mListUserDTO.filter {
-            it.friend != ""
-        }
-        val mListFrNull = mListUserDTO.filter {
-            it.friend == ""
-        }.distinctBy { it.email }
-        val finalList: MutableList<UserDTO> = mutableListOf()
-        finalList.addAll(mList)
-        finalList.addAll(mListFrNull)
-        endList = finalList.distinctBy {
-            it.phone
-        }
+//
+//        val finalList: MutableList<UserDTO> = mutableListOf()
+//        finalList.addAll(mList)
+//        finalList.addAll(mListFrNull)
+        endList = mListUserDTO
+//        endList = finalList.distinctBy {
+//            it.phone
+//        }
 //        addFriendAdapter?.setList(endList)
         setUpTab(0)
     }
@@ -445,19 +450,55 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         when (index) {
             0 -> {
                 // suggest
-                    endList.forEach { userDTO ->
-                        listContact.forEach { contact ->
+                endList.forEach { userDTO ->
+                    listContact.forEach { contact ->
                         if (userDTO.friend != "1" && userDTO.friend != "2") {
                             if (userDTO.phone == contact.phone) {
+                                var checkList = listResult.filter {
+                                    it.phone == contact.phone
+                                }
+                                if (checkList.isNotEmpty()) {
+                                    for (i in checkList.indices){
+                                        listResult.remove(checkList[i])
+                                    }
+                                    checkList = listOf()
+                                }
                                 listResult.add(userDTO)
                             } else {
+                                var checkList = listResult.filter {
+                                    it.phone == contact.phone
+                                }
+                                if (checkList.isNotEmpty()) {
+                                    for (i in checkList.indices){
+                                        listResult.remove(checkList[i])
+                                    }
+                                    checkList = listOf()
+                                }
                                 contact.friend = "4"
                                 listResult.add(contact)
                             }
-                        }else{
-                            if (userDTO.phone != contact.phone){
-                                contact.friend = "4"
-                                listResult.add(contact)
+                        } else {
+//                            if (userDTO.phone == contact.phone) {
+//                                listResult.remove(contact)
+//                            }
+//                            else{
+//                                val check = listResult.filter {
+//                                    it.phone == contact.phone
+//                                }
+//                                if (check.isNotEmpty())
+//                                    return@forEach
+//                                contact.friend = "4"
+//                                listResult.add(contact)
+//                            }
+                        }
+                    }
+                }
+                //var listCheck: MutableList<UserInfo> = mutableListOf()
+                endList.forEach { userDTO ->
+                    listResult.forEach { res ->
+                        if (userDTO.friend == "1" || userDTO.friend == "2") {
+                            if (userDTO.phone == res.phone){
+                                listResult.remove(res)
                             }
                         }
                     }
