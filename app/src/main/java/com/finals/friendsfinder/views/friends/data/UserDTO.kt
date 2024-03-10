@@ -11,5 +11,6 @@ data class UserDTO(
     var receiverBlocking: String = "",
     var typeClick: Int = 0,
     var phone: String = "",
-    var email: String = ""
+    var email: String = "",
+    var isSelected: Boolean = false
 )

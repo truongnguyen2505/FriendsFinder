@@ -45,9 +45,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.tabs.TabLayout.Tab
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -488,7 +485,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                             mListImg[1].setImageResource(R.drawable.ic_chat_white)
                             addFragmentToBackstack(
                                 android.R.id.content,
-                                AllMessageFragment.newInstance()
+                                AllMessageFragment.newInstance(ArrayList(listAllUser))
                             )
                         }
 

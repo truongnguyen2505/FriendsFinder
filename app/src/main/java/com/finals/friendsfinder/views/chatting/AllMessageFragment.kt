@@ -1,99 +1,159 @@
 package com.finals.friendsfinder.views.chatting
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.finals.friendsfinder.bases.BaseFragment
-import com.finals.friendsfinder.databinding.FragmentAddFriendsBinding
+import com.finals.friendsfinder.databinding.FragmentAllMessageBinding
+import com.finals.friendsfinder.models.BaseAccessToken
+import com.finals.friendsfinder.utilities.addFragmentToBackstack
 import com.finals.friendsfinder.utilities.clickWithDebounce
-import com.finals.friendsfinder.views.friends.adapter.AddFriendsAdapter
+import com.finals.friendsfinder.utilities.commons.TableKey
+import com.finals.friendsfinder.views.chatting.adapter.AllMessageAdapter
+import com.finals.friendsfinder.views.chatting.data.ConversationModel
+import com.finals.friendsfinder.views.chatting.data.ParticipantModel
 import com.finals.friendsfinder.views.friends.data.UserInfo
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class AllMessageFragment : BaseFragment<FragmentAddFriendsBinding>() {
+class AllMessageFragment : BaseFragment<FragmentAllMessageBinding>() {
 
 
     companion object {
-        fun newInstance(): AllMessageFragment {
-            val arg = Bundle()
+        private const val USER_LIST = "USER_LIST"
+        fun newInstance(listUser: ArrayList<UserInfo?>): AllMessageFragment {
+            val arg = Bundle().apply {
+                putParcelableArrayList(USER_LIST, listUser)
+            }
             return AllMessageFragment().apply {
                 arguments = arg
             }
         }
     }
 
-    private var addFriendAdapter: AddFriendsAdapter? = null
+    private var allMessageAdapter: AllMessageAdapter? = null
     private var currentListUser: MutableList<UserInfo>? = null
+    private var listConversation: MutableList<ConversationModel>? = null
+    private var listParticipant: MutableList<ParticipantModel>? = null
+
     override fun observeHandle() {
         super.observeHandle()
-        currentListUser = mutableListOf()
+        currentListUser = arguments?.getParcelableArrayList(USER_LIST)
+        listConversation = mutableListOf()
+        listParticipant = mutableListOf()
     }
 
-    override fun bindData() {
-        super.bindData()
+    override fun setupView() {
+        super.setupView()
         setAdapter()
         getListUser()
         setListener()
     }
 
+    override fun bindData() {
+        super.bindData()
+
+    }
+
     private fun setListener() {
-        with(rootView){
+        with(rootView) {
+            layoutHeader.imgPlus.isVisible = true
             layoutHeader.tvMessage.text = "Messengers"
             layoutHeader.imgBack.clickWithDebounce {
                 activity?.supportFragmentManager?.popBackStack()
+            }
+            layoutHeader.imgPlus.clickWithDebounce {
+                activity?.addFragmentToBackstack(
+                    android.R.id.content,
+                    CreateGroupFragment.newInstance(ArrayList(currentListUser))
+                )
             }
         }
     }
 
     private fun getListUser() {
-        val firebase = FirebaseAuth.getInstance().currentUser
-        val dbReference = FirebaseDatabase.getInstance().getReference("Users")
+        val dbConversationReference =
+            FirebaseDatabase.getInstance().getReference(TableKey.CONVERSATION.key)
+        val dbParticipantReference =
+            FirebaseDatabase.getInstance().getReference(TableKey.PARTICIPANTS.key)
 
-        dbReference.addValueEventListener(object : ValueEventListener {
+        dbConversationReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                currentListUser?.clear()
+                listConversation?.clear()
                 for (dataSnap: DataSnapshot in snapshot.children) {
-                    val user = dataSnap.getValue(UserInfo::class.java)
-                    //check not me
-                    if (!user?.userId.equals(firebase?.uid)) {
-                        currentListUser?.add(user!!)
-                    }
+                    val conv = dataSnap.getValue(ConversationModel::class.java)
+                    conv?.let { listConversation?.add(it) }
                 }
-               // addFriendAdapter?.setList(currentListUser ?: listOf())
+                checkCurrentConversation()
             }
 
             override fun onCancelled(error: DatabaseError) {
-                currentListUser?.clear()
+                listConversation?.clear()
+            }
+
+        })
+
+        dbParticipantReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listParticipant?.clear()
+                for (dataSnap: DataSnapshot in snapshot.children) {
+                    val conv = dataSnap.getValue(ParticipantModel::class.java)
+                    conv?.let { listParticipant?.add(it) }
+                }
+                checkCurrentConversation()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                listParticipant?.clear()
             }
 
         })
     }
 
+    private fun checkCurrentConversation() {
+        val currentIdUser = BaseAccessToken.accessToken
+        val listCurrentConversation: MutableList<ConversationModel> = mutableListOf()
+        listConversation?.forEachIndexed { index, conversationModel ->
+            listParticipant?.forEachIndexed { index, participantModel ->
+                if (conversationModel.conversationId.equals(
+                        participantModel.conversationId,
+                        true
+                    )
+                ) {
+                    if (conversationModel.creatorId.equals(
+                            currentIdUser,
+                            true
+                        ) || participantModel.userId.equals(currentIdUser, true)
+                    ) {
+                        listCurrentConversation.add(conversationModel)
+                    }
+                }
+            }
+        }
+        val newList = listCurrentConversation.distinctBy {
+            it.conversationId
+        }
+        rootView.rvListMessage.isVisible = newList.isNotEmpty()
+        rootView.tvNoData.isVisible = newList.isEmpty()
+        allMessageAdapter?.setList(newList)
+    }
+
     private fun setAdapter() {
-//        addFriendAdapter = AddFriendsAdapter(requireContext(), onClickItem = { userInfo ->
-//            val intent = Intent(requireContext(), ChatActivity::class.java)
-////            intent.putExtra(SignupKey.USERID.key, userInfo.userId)
-////            intent.putExtra(SignupKey.USERNAME.key, userInfo.userName)
-//            startActivity(intent)
-//        })
-        rootView.rvListUser.apply {
+        allMessageAdapter = AllMessageAdapter(requireContext(), onItemClick = { convDTO ->
+            // go to chatting
+        })
+        rootView.rvListMessage.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            adapter = addFriendAdapter
+            adapter = allMessageAdapter
         }
 
     }
 
-    override fun setupEventControl() {
-        super.setupEventControl()
-    }
-
-    override fun getViewBinding(inflater: LayoutInflater): FragmentAddFriendsBinding {
-        return FragmentAddFriendsBinding.inflate(inflater)
+    override fun getViewBinding(inflater: LayoutInflater): FragmentAllMessageBinding {
+        return FragmentAllMessageBinding.inflate(inflater)
     }
 }

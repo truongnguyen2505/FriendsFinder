@@ -21,13 +21,24 @@
     <com.finals.friendsfinder.customizes.CustomTextViewFonts
         android:id="@+id/tvMessage"
         style="@style/TextBlack18Bold"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_weight="1"
         android:paddingHorizontal="12dp"
         android:paddingVertical="12dp"
         android:inputType=""
         tools:text="Back" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:id="@+id/imgPlus"
+        tools:visibility="visible"
+        android:visibility="gone"
+        android:layout_gravity="center_vertical"
+        android:padding="4dp"
+        app:srcCompat="@drawable/plus"/>
 
 
 </LinearLayout>

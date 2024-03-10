@@ -9,7 +9,7 @@ import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.showActivity
 import com.finals.friendsfinder.views.chatting.adapter.ChatAdapter
-import com.finals.friendsfinder.views.chatting.data.ChatModel
+import com.finals.friendsfinder.views.chatting.data.MessageModel
 import com.finals.friendsfinder.views.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -53,29 +53,29 @@ class ChatActivity : BaseActivity<ActivityChatBinding>() {
     }
 
     private fun readMess(senderId: String, receiverId: String) {
-        val chatList: MutableList<ChatModel> = mutableListOf()
+        val chatList: MutableList<MessageModel> = mutableListOf()
         dbReference = FirebaseDatabase.getInstance().getReference("Chat")
 
         dbReference?.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 chatList.clear()
                 for (dataSnap: DataSnapshot in snapshot.children) {
-                    val chat = dataSnap.getValue(ChatModel::class.java)
-                    if (chat?.senderId.equals(senderId) && chat?.receiverId.equals(receiverId) || chat?.senderId.equals(
-                            receiverId
-                        ) && chat?.receiverId.equals(senderId)
-                    ) {
-                        rootView.rvChatting.apply {
-                            layoutManager =
-                                LinearLayoutManager(
-                                    this@ChatActivity,
-                                    LinearLayoutManager.VERTICAL,
-                                    false
-                                )
-                            adapter = chatAdapter
-                        }
-                        chat?.let { chatList.add(it) }
-                    }
+                    val chat = dataSnap.getValue(MessageModel::class.java)
+//                    if (chat?.senderId.equals(senderId) && chat?.receiverId.equals(receiverId) || chat?.senderId.equals(
+//                            receiverId
+//                        ) && chat?.receiverId.equals(senderId)
+//                    ) {
+//                        rootView.rvChatting.apply {
+//                            layoutManager =
+//                                LinearLayoutManager(
+//                                    this@ChatActivity,
+//                                    LinearLayoutManager.VERTICAL,
+//                                    false
+//                                )
+//                            adapter = chatAdapter
+//                        }
+//                        chat?.let { chatList.add(it) }
+//                    }
                 }
                 chatAdapter?.setList(chatList)
                 rootView.rvChatting.scrollToPosition(chatList.size.minus(1))

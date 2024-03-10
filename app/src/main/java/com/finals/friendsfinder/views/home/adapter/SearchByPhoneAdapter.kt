@@ -61,11 +61,5 @@ class SearchByPhoneAdapter(
                     .placeholder(R.drawable.ic_avatar_empty_25).into(imgAvatar)
             }
         }
-
-        private fun checkFriend(pos: Int, txtBtn1: String) {
-            with(binding) {
-
-            }
-        }
     }
 }

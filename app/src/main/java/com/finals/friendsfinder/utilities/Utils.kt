@@ -351,5 +351,16 @@ class Utils {
         }
     }
 
-
+    @SuppressLint("SimpleDateFormat")
+    fun convertStringDate(oldFormat: String, newFormat: String, valueDate: String): String {
+        return try {
+            val old = SimpleDateFormat(oldFormat)
+            val new = SimpleDateFormat(newFormat)
+            val oldValue = old.parse(valueDate)
+            String.format("%s", new.format(oldValue))
+        } catch (ex: Exception) {
+            android.util.Log.d("CONVERT_DATE_ERR", "convertStringDate: ${ex.message.toString()}")
+            ""
+        }
+    }
 }

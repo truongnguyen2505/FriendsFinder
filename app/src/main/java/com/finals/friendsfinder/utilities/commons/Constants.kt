@@ -87,14 +87,14 @@ enum class MessageKey(val key: String) {
 enum class ConversationKey(val key: String) {
     CONVERSATION_ID("conversationId"),
     CONVERSATION_NAME("conversationName"),
-    CREATE_AT("createAt")
+    CREATE_AT("createAt"),
+    CREATOR_ID("creatorId")
 }
 
 enum class ParticipantKey(val key: String) {
-    PARTICIPANT_ID("conversationId"),
-    USERNAME("userName"),
+    PARTICIPANT_ID("participantId"),
     USERID("userId"),
-    AVATAR("avatar")
+    CONVERSATION_ID("conversationId")
 }
 
 enum class LocationKey(val key: String) {
@@ -110,7 +110,8 @@ enum class TableKey(val key: String) {
     LOCATIONS("Locations"),
     MESSAGES("Messages"),
     FRIENDS("Friends"),
-    PARTICIPANTS("Participants")
+    PARTICIPANTS("Participants"),
+    CONVERSATION("Conversations")
 }
 
 

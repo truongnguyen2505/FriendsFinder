@@ -24,7 +24,10 @@ import com.finals.friendsfinder.models.BaseAccessToken
 import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.Constants
+import com.finals.friendsfinder.utilities.commons.ConversationKey
 import com.finals.friendsfinder.utilities.commons.FriendKey
+import com.finals.friendsfinder.utilities.commons.ParticipantKey
+import com.finals.friendsfinder.utilities.commons.TableKey
 import com.finals.friendsfinder.views.friends.adapter.AddFriendsAdapter
 import com.finals.friendsfinder.views.friends.data.Friends
 import com.finals.friendsfinder.views.friends.data.UserDTO
@@ -269,7 +272,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                         listener = object : NotifyDialog.OnDialogListener {
                             override fun onClickButton(isOk: Boolean) {
                                 if (isOk) {
-                                    updateFriend(info, type)
+                                    updateFriend(info)
                                 }
                             }
                         })
@@ -357,7 +360,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         dbReference.child(info.friendId).removeValue()
     }
 
-    private fun updateFriend(info: UserDTO, typeUpdate: Int) {
+    private fun updateFriend(info: UserDTO) {
         val db = FirebaseDatabase.getInstance()
         val dbReference = db.getReference("Friends")
         //val localInfo = Utils.shared.getUser()
@@ -390,14 +393,50 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
 
         dbReference.child(info.friendId).setValue(hasMap).addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                createConversation(info.userId)
+            }
+        }
+    }
 
+    private fun createConversation(userIdFriend: String) {
+        val userInfo = currentListUser?.filter {
+            it.userId == userIdFriend
+        }
+        val db = FirebaseDatabase.getInstance()
+        val dbReference = db.getReference(TableKey.CONVERSATION.key)
+        val keyId = Utils.shared.autoGenerateId()
+        val hasMap: HashMap<String, String> = HashMap()
+        val currentTime = Utils.shared.getDateTimeNow()
+        hasMap[ConversationKey.CONVERSATION_ID.key] = keyId
+        hasMap[ConversationKey.CONVERSATION_NAME.key] = userInfo?.get(0)?.userName ?: "AnyUser"
+        hasMap[ConversationKey.CREATOR_ID.key] = BaseAccessToken.accessToken
+        hasMap[ConversationKey.CREATE_AT.key] = currentTime
+
+        dbReference.child(keyId).setValue(hasMap).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                createParticipant(keyId, userInfo?.get(0)?.userId ?: "")
+            }
+        }
+    }
+
+    private fun createParticipant(keyConversationId: String, idUserReceiver: String) {
+        val db = FirebaseDatabase.getInstance()
+        val dbReference = db.getReference(TableKey.PARTICIPANTS.key)
+        val keyId = Utils.shared.autoGenerateId()
+        val hasMap: HashMap<String, String> = HashMap()
+        hasMap[ParticipantKey.CONVERSATION_ID.key] = keyConversationId
+        hasMap[ParticipantKey.PARTICIPANT_ID.key] = keyId
+        hasMap[ParticipantKey.USERID.key] = idUserReceiver
+
+        dbReference.child(keyId).setValue(hasMap).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
             }
         }
     }
 
     private fun createFriend(info: UserDTO) {
         val db = FirebaseDatabase.getInstance()
-        val dbReference = db.getReference("Friends")
+        val dbReference = db.getReference(TableKey.FRIENDS.key)
         val localInfo = Utils.shared.getUser()
         val keyId = Utils.shared.autoGenerateId()
         val hasMap: HashMap<String, String> = HashMap()
@@ -458,7 +497,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                                     it.phone == contact.phone
                                 }
                                 if (checkList.isNotEmpty()) {
-                                    for (i in checkList.indices){
+                                    for (i in checkList.indices) {
                                         listResult.remove(checkList[i])
                                     }
                                     checkList = listOf()
@@ -469,7 +508,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                                     it.phone == contact.phone
                                 }
                                 if (checkList.isNotEmpty()) {
-                                    for (i in checkList.indices){
+                                    for (i in checkList.indices) {
                                         listResult.remove(checkList[i])
                                     }
                                     checkList = listOf()
@@ -497,7 +536,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
                 endList.forEach { userDTO ->
                     listResult.forEach { res ->
                         if (userDTO.friend == "1" || userDTO.friend == "2") {
-                            if (userDTO.phone == res.phone){
+                            if (userDTO.phone == res.phone) {
                                 listResult.remove(res)
                             }
                         }
