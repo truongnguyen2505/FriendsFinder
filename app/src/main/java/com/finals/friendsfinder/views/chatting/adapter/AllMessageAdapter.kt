@@ -52,7 +52,7 @@ class AllMessageAdapter(
                 tvDesc.text = Utils.shared.convertStringDate(
                     oldFormat = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'",
                     newFormat = "dd-MM-yyyy HH:mm",
-                    item.createAt
+                    item.createAt ?: ""
                 )
                 layoutMain.clickWithDebounce {
                     onItemClick.invoke(item)

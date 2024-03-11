@@ -38,6 +38,7 @@ class AllMessageFragment : BaseFragment<FragmentAllMessageBinding>() {
     private var currentListUser: MutableList<UserInfo>? = null
     private var listConversation: MutableList<ConversationModel>? = null
     private var listParticipant: MutableList<ParticipantModel>? = null
+    var onBackEvent: (() -> Unit)? = null
 
     override fun observeHandle() {
         super.observeHandle()
@@ -53,16 +54,12 @@ class AllMessageFragment : BaseFragment<FragmentAllMessageBinding>() {
         setListener()
     }
 
-    override fun bindData() {
-        super.bindData()
-
-    }
-
     private fun setListener() {
         with(rootView) {
             layoutHeader.imgPlus.isVisible = true
             layoutHeader.tvMessage.text = "Messengers"
             layoutHeader.imgBack.clickWithDebounce {
+                onBackEvent?.invoke()
                 activity?.supportFragmentManager?.popBackStack()
             }
             layoutHeader.imgPlus.clickWithDebounce {

@@ -10,8 +10,8 @@ import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentCreateGroupBinding
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.views.chatting.adapter.CreateGroupAdapter
+import com.finals.friendsfinder.views.friends.data.UserDTO
 import com.finals.friendsfinder.views.friends.data.UserInfo
-import com.finals.friendsfinder.views.home.adapter.SearchByPhoneAdapter
 
 class CreateGroupFragment : BaseFragment<FragmentCreateGroupBinding>() {
 
@@ -63,7 +63,15 @@ class CreateGroupFragment : BaseFragment<FragmentCreateGroupBinding>() {
                         }
                         tvNoData.isVisible = listSearch.isEmpty()
                         rvSearch.isVisible = listSearch.isNotEmpty()
-                        searchByNameAdapter?.setList(listSearch)
+                        val listUserDTO: MutableList<UserDTO> = mutableListOf()
+                        listSearch.forEach { info ->
+                            val userDTO = UserDTO()
+                            userDTO.userName = info.userName
+                            userDTO.userId = info.userId
+                            userDTO.phone = info.phoneNumber
+                            listUserDTO.add(userDTO)
+                        }
+                        searchByNameAdapter?.setList(listUserDTO)
                     }
                 }
             }

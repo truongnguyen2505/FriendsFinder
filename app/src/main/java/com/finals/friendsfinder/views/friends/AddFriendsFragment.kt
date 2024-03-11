@@ -356,13 +356,13 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
 
     private fun removeFriend(info: UserDTO) {
         val db = FirebaseDatabase.getInstance()
-        val dbReference = db.getReference("Friends")
+        val dbReference = db.getReference(TableKey.FRIENDS.key)
         dbReference.child(info.friendId).removeValue()
     }
 
     private fun updateFriend(info: UserDTO) {
         val db = FirebaseDatabase.getInstance()
-        val dbReference = db.getReference("Friends")
+        val dbReference = db.getReference(TableKey.FRIENDS.key)
         //val localInfo = Utils.shared.getUser()
         //val keyId = Utils.shared.autoGenerateId()
         val hasMap: HashMap<String, String> = HashMap()

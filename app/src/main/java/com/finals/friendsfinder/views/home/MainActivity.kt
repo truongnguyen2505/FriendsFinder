@@ -323,7 +323,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                 for (dataSnap: DataSnapshot in snapshot.children) {
                     val friend = dataSnap.getValue(Friends::class.java)
                     //check not me
-                    if (friend?.userId.equals(currentUserId) || friend?.receiverId.equals(currentUserId)) {
+                    if (friend?.userId.equals(currentUserId) || friend?.receiverId.equals(
+                            currentUserId
+                        )
+                    ) {
                         if (friend?.friend == "2") {
                             listUserFriend.add(friend)
                         }
@@ -483,9 +486,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
 
                         1 -> {
                             mListImg[1].setImageResource(R.drawable.ic_chat_white)
+                            val fragment = AllMessageFragment.newInstance(ArrayList(listAllUser))
+                            fragment.onBackEvent = {
+                                setHomeButton()
+                            }
                             addFragmentToBackstack(
                                 android.R.id.content,
-                                AllMessageFragment.newInstance(ArrayList(listAllUser))
+                                fragment
                             )
                         }
 
