@@ -20,147 +20,185 @@
         android:padding="4dp"
         app:srcCompat="@drawable/ic_btn_close"/>
 
-    <LinearLayout
-        android:id="@+id/btnAccount"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_below="@+id/btnClose"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="24dp"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_user_31_white"/>
-
-        <com.finals.friendsfinder.customizes.CustomTextViewFonts
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Text.Bold"
-            android:textSize="24sp"
-            android:textColor="@color/white"
-            android:layout_marginStart="12dp"
-            android:text="My Account"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/btnMyQr"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="48dp"
-        android:layout_alignStart="@+id/btnAccount"
-        android:layout_below="@+id/btnAccount"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            app:srcCompat="@drawable/ic_scan_qr_white"/>
-
-        <com.finals.friendsfinder.customizes.CustomTextViewFonts
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Text.Bold"
-            android:textSize="24sp"
-            android:textColor="@color/white"
-            android:layout_marginStart="12dp"
-            android:text="My QR"/>
-
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/btnChangePass"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="48dp"
-        android:layout_alignStart="@+id/btnMyQr"
-        android:layout_below="@+id/btnMyQr"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_create_post"/>
-
-        <com.finals.friendsfinder.customizes.CustomTextViewFonts
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Text.Bold"
-            android:textSize="24sp"
-            android:textColor="@color/white"
-            android:layout_marginStart="12dp"
-            android:text="Change Password"/>
-
-    </LinearLayout>
-<!--    <LinearLayout-->
-<!--        android:id="@+id/btnLocation"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginTop="48dp"-->
-<!--        android:layout_alignStart="@+id/btnChangePass"-->
-<!--        android:layout_below="@+id/btnChangePass"-->
-<!--        android:layout_centerHorizontal="true"-->
-<!--        android:layout_height="wrap_content">-->
-
-<!--        <androidx.appcompat.widget.AppCompatImageView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:srcCompat="@drawable/ic_setting_location"/>-->
-
-<!--        <com.finals.friendsfinder.customizes.CustomTextViewFonts-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            style="@style/Text.Bold"-->
-<!--            android:textSize="24sp"-->
-<!--            android:textColor="@color/white"-->
-<!--            android:layout_marginStart="12dp"-->
-<!--            android:text="Location Setting"/>-->
-
-<!--    </LinearLayout>-->
-
-    <LinearLayout
-        android:id="@+id/btnSetting"
-        android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="48dp"
-        android:layout_alignStart="@+id/btnChangePass"
-        android:layout_below="@+id/btnChangePass"
-        android:layout_centerHorizontal="true"
-        android:layout_height="wrap_content">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="33dp"
-            android:layout_height="33dp"
-            app:srcCompat="@drawable/ic_setting"/>
-
-        <com.finals.friendsfinder.customizes.CustomTextViewFonts
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Text.Bold"
-            android:textSize="24sp"
-            android:textColor="@color/white"
-            android:layout_marginStart="12dp"
-            android:text="Setting Profile"/>
-
-    </LinearLayout>
-
-    <com.finals.friendsfinder.customizes.CustomTextViewFonts
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnLogout"
-        style="@style/Text.SemiBold"
-        android:textColor="@color/color_border_light"
-        android:textSize="24sp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="48dp"
-        android:background="@drawable/bg_btn_log_out"
-        android:paddingVertical="11dp"
-        android:gravity="center"
-        android:layout_marginHorizontal="32dp"
-        android:text="Log out"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/btnAccount"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="80dp"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_user_31_white"/>
+
+                <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="12dp"
+                    android:text="My Account"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnMyQr"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="48dp"
+                android:layout_alignStart="@+id/btnAccount"
+                android:layout_below="@+id/btnAccount"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    app:srcCompat="@drawable/ic_scan_qr_white"/>
+
+                <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="12dp"
+                    android:text="My QR"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/btnChangePass"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="48dp"
+                android:layout_alignStart="@+id/btnMyQr"
+                android:layout_below="@+id/btnMyQr"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_create_post"/>
+
+                <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="12dp"
+                    android:text="Change Password"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnPolicy"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="48dp"
+                android:layout_alignStart="@+id/btnChangePass"
+                android:layout_below="@+id/btnChangePass"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    app:srcCompat="@drawable/ic_document"/>
+
+                <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="12dp"
+                    android:text="Privacy Policy"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnTermsOfUses"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="48dp"
+                android:layout_alignStart="@+id/btnPolicy"
+                android:layout_below="@+id/btnPolicy"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    app:srcCompat="@drawable/ic_document"/>
+
+                <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="12dp"
+                    android:text="Terms of Uses"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnSetting"
+                android:layout_width="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="48dp"
+                android:layout_alignStart="@+id/btnTermsOfUses"
+                android:layout_below="@+id/btnTermsOfUses"
+                android:layout_centerHorizontal="true"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="33dp"
+                    android:layout_height="33dp"
+                    app:srcCompat="@drawable/ic_setting"/>
+
+                <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    style="@style/Text.Bold"
+                    android:textSize="24sp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="12dp"
+                    android:text="Setting Profile"/>
+
+            </LinearLayout>
+
+            <com.finals.friendsfinder.customizes.CustomTextViewFonts
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnLogout"
+                style="@style/Text.SemiBold"
+                android:textColor="@color/color_border_light"
+                android:textSize="24sp"
+                android:layout_centerHorizontal="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="48dp"
+                android:background="@drawable/bg_btn_log_out"
+                android:paddingVertical="11dp"
+                android:gravity="center"
+                android:layout_marginHorizontal="32dp"
+                android:text="Log out"/>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </RelativeLayout>

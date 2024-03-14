@@ -8,4 +8,6 @@
     <string name="str_error_occurs">An error occurred. Please check again.</string>
     <string name="str_error_not_found_server">Server not found.</string>
 
+    <string name="txt_accept_policy" translatable="false">By clicking accept, you agree to have read and acknowledge that you are bound by %s and %s</string>
+
 </resources>

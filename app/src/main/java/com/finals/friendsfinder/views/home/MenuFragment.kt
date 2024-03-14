@@ -15,7 +15,9 @@ import com.finals.friendsfinder.utilities.commons.TableKey
 import com.finals.friendsfinder.utilities.showActivity
 import com.finals.friendsfinder.views.home.menu.ChangePasswordFragment
 import com.finals.friendsfinder.views.home.menu.MyAccountFragment
+import com.finals.friendsfinder.views.home.menu.PrivacyPolicyFragment
 import com.finals.friendsfinder.views.home.menu.SettingProfile
+import com.finals.friendsfinder.views.home.menu.TermsOfUsesFragment
 import com.finals.friendsfinder.views.login.LoginActivity
 import com.google.firebase.database.FirebaseDatabase
 
@@ -80,6 +82,18 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
             }
             btnMyQr.clickWithDebounce {
                 activity?.addFragmentToBackstack(android.R.id.content, MyQRFragment.newInstance())
+            }
+            btnPolicy.clickWithDebounce {
+                activity?.addFragmentToBackstack(
+                    android.R.id.content,
+                    PrivacyPolicyFragment.newInstance()
+                )
+            }
+            btnTermsOfUses.clickWithDebounce {
+                activity?.addFragmentToBackstack(
+                    android.R.id.content,
+                    TermsOfUsesFragment.newInstance()
+                )
             }
         }
     }
