@@ -13,6 +13,7 @@ class Constants {
         const val CURRENT_LANGUAGE: String = "CURRENT_LANGUAGE"
         const val EVENT_CHANGE_LANGUAGE: String = "event_change_language"
         const val CURRENT_USER: String = "CURRENT_USER"
+        const val TYPE_GROUP: String = "TYPE_GROUP"
 
         var isLockShowPopup: Boolean = false
 
@@ -88,7 +89,8 @@ enum class ConversationKey(val key: String) {
     CONVERSATION_ID("conversationId"),
     CONVERSATION_NAME("conversationName"),
     CREATE_AT("createAt"),
-    CREATOR_ID("creatorId")
+    CREATOR_ID("creatorId"),
+    TYPE_GROUP("type_group")
 }
 
 enum class ParticipantKey(val key: String) {

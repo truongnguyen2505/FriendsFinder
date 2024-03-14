@@ -3,6 +3,7 @@ package com.finals.friendsfinder.views.chatting.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.finals.friendsfinder.bases.BaseViewHolder
 import com.finals.friendsfinder.databinding.ItemSearchByNameBinding
@@ -53,6 +54,7 @@ class CreateGroupAdapter(
             super.bindData(data, position)
             val item = listUser[position]
             with(binding) {
+                view.isVisible = position != listUser.size.minus(1)
                 tvName.text = item.userName
                 tvDesc.text = item.phone
                 imgSelect.isSelected = item.isSelected

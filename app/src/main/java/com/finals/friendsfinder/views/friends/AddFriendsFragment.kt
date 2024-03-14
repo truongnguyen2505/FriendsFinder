@@ -28,6 +28,8 @@ import com.finals.friendsfinder.utilities.commons.ConversationKey
 import com.finals.friendsfinder.utilities.commons.FriendKey
 import com.finals.friendsfinder.utilities.commons.ParticipantKey
 import com.finals.friendsfinder.utilities.commons.TableKey
+import com.finals.friendsfinder.views.chatting.data.ConversationModel
+import com.finals.friendsfinder.views.chatting.data.ParticipantModel
 import com.finals.friendsfinder.views.friends.adapter.AddFriendsAdapter
 import com.finals.friendsfinder.views.friends.data.Friends
 import com.finals.friendsfinder.views.friends.data.UserDTO
@@ -56,10 +58,17 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     private lateinit var navListText: List<TextView>
     private lateinit var navListLn: List<View>
     private var listContact = listOf<UserDTO>()
+    private var listConversation: MutableList<ConversationModel>? = null
+    private var listParticipant: MutableList<ParticipantModel>? = null
+    //private var listMyConversation: MutableList<ConversationModel>? = null
+
     override fun observeHandle() {
         super.observeHandle()
         currentListUser = mutableListOf()
         currentListFriend = mutableListOf()
+        listConversation = mutableListOf()
+        listParticipant = mutableListOf()
+        //listMyConversation = mutableListOf()
     }
 
     override fun bindData() {
@@ -118,8 +127,10 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     private fun getListUser() {
         val currentUserId = BaseAccessToken.accessToken
         val db = FirebaseDatabase.getInstance()
-        val dbReference = db.getReference("Users")
-        val dbReference2 = db.getReference("Friends")
+        val dbReference = db.getReference(TableKey.USERS.key)
+        val dbReference2 = db.getReference(TableKey.FRIENDS.key)
+        val dbReference3 = db.getReference(TableKey.CONVERSATION.key)
+        val dbReference4 = db.getReference(TableKey.PARTICIPANTS.key)
 
         dbReference.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -153,7 +164,38 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
             }
 
             override fun onCancelled(error: DatabaseError) {
+                currentListFriend?.clear()
+            }
 
+        })
+        dbReference3.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listConversation?.clear()
+                for (dataSnap: DataSnapshot in snapshot.children) {
+                    val conv = dataSnap.getValue(ConversationModel::class.java)
+                    conv?.let { listConversation?.add(it) }
+                }
+                //checkCurrentConversation()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                listConversation?.clear()
+            }
+
+        })
+
+        dbReference4.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                listParticipant?.clear()
+                for (dataSnap: DataSnapshot in snapshot.children) {
+                    val conv = dataSnap.getValue(ParticipantModel::class.java)
+                    conv?.let { listParticipant?.add(it) }
+                }
+                //checkCurrentConversation()
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                listParticipant?.clear()
             }
 
         })
@@ -312,7 +354,7 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
             } else {
                 showMessage(
                     title = "Confirm",
-                    message = "Are you sure you want to unfriend this person?",
+                    message = "We'll delete your personal chat with this person after you unfriend, are you sure you want to do this?",
                     txtBtnOk = "Yes",
                     enableCancel = true,
                     listener = object : NotifyDialog.OnDialogListener {
@@ -357,7 +399,45 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     private fun removeFriend(info: UserDTO) {
         val db = FirebaseDatabase.getInstance()
         val dbReference = db.getReference(TableKey.FRIENDS.key)
-        dbReference.child(info.friendId).removeValue()
+        val dbReference2 = db.getReference(TableKey.CONVERSATION.key)
+        dbReference.child(info.friendId).removeValue().addOnCompleteListener {
+            if (it.isSuccessful) {
+                val firstId = info.userId
+                val secondId = info.receiverId
+                val listFilter: MutableList<ConversationModel> = mutableListOf()
+                listConversation?.forEachIndexed { index, conversationModel ->
+                    listParticipant?.forEachIndexed { index, participantModel ->
+                        if (conversationModel.conversationId.equals(
+                                participantModel.conversationId,
+                                true
+                            )
+                        ) {
+                            if ((conversationModel.creatorId.equals(
+                                    firstId,
+                                    true
+                                )) && (participantModel.userId.equals(secondId, true)) ||
+                                (conversationModel.creatorId.equals(
+                                    secondId,
+                                    true
+                                )) && (participantModel.userId.equals(firstId, true))
+                            ) {
+                                listFilter.add(conversationModel)
+                            }
+                        }
+
+                    }
+                }
+                val newList = listFilter.filter {
+                    it.typeGroup != Constants.TYPE_GROUP
+                }
+                if (newList.isEmpty())
+                    return@addOnCompleteListener
+                else {
+                    val idConv = newList.first().conversationId ?: ""
+                    dbReference2.child(idConv).removeValue()
+                }
+            }
+        }
     }
 
     private fun updateFriend(info: UserDTO) {

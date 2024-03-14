@@ -4,5 +4,6 @@ data class ConversationModel(
     val conversationId: String? = "",
     val conversationName: String? = "",
     val createAt: String? = "",
-    val creatorId: String? = ""
+    val creatorId: String? = "",
+    val typeGroup: String? = ""
 )
