@@ -78,6 +78,22 @@
             app:font_type="@string/Roboto_Bold" />
 
         <com.finals.friendsfinder.customizes.CustomTextViewFonts
+            android:id="@+id/btnFriend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_blue_solid"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:text="Friend"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:font_type="@string/Roboto_Bold" />
+
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
             android:id="@+id/btnBlock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,6 +105,22 @@
             android:paddingHorizontal="12dp"
             android:paddingVertical="8dp"
             android:text="Block"
+            android:textColor="@color/red_400"
+            android:textSize="16sp"
+            app:font_type="@string/Roboto_Bold" />
+
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
+            android:id="@+id/btnMap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_red_stroke"
+            android:gravity="center"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:text="Bản đồ"
             android:textColor="@color/red_400"
             android:textSize="16sp"
             app:font_type="@string/Roboto_Bold" />
