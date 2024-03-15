@@ -56,7 +56,7 @@ import com.google.gson.Gson
 class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
 
     companion object {
-        const val TIME_UPDATE_LOCATION = 60000 * 5L
+        const val TIME_UPDATE_LOCATION = 60000 * 15L
 
         //const val TIME_UPDATE_LOCATION = 30000 * 1L
         const val TAG = "MAP_ACTIVITY"
@@ -543,10 +543,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                 }
             }
         }
-    }
-
-    override fun setupEventControl() {
-        super.setupEventControl()
     }
 
     override fun getViewBinding(): ActivityMainBinding {

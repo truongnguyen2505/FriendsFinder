@@ -38,6 +38,7 @@ class MapFriendFragment : BaseFragment<FragmentMapFriendBinding>(), OnMapReadyCa
             }
         }
     }
+
     private var userLocationDTO: UserLocationDTO? = null
     private var mMap: GoogleMap? = null
     private var mapFragment: SupportMapFragment? = null
@@ -54,7 +55,7 @@ class MapFriendFragment : BaseFragment<FragmentMapFriendBinding>(), OnMapReadyCa
         arguments?.let {
             userLocationDTO = it.getParcelable("USER_INFO")
         }
-        val currentUserId = BaseAccessToken.accessToken
+        //val currentUserId = BaseAccessToken.accessToken
         val dbReference2 = FirebaseDatabase.getInstance().getReference(TableKey.LOCATIONS.key)
         dbReference2.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -62,12 +63,9 @@ class MapFriendFragment : BaseFragment<FragmentMapFriendBinding>(), OnMapReadyCa
                 for (dataSnap: DataSnapshot in snapshot.children) {
                     val userLocation = dataSnap.getValue(Location::class.java)
                     //check not me
-                    if (!userLocation?.userId.equals(currentUserId)) {
-                        listUserLocation.add(userLocation)
-                    }
+                    listUserLocation.add(userLocation)
                 }
                 drawMarker()
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -86,8 +84,8 @@ class MapFriendFragment : BaseFragment<FragmentMapFriendBinding>(), OnMapReadyCa
     override fun setupView() {
         super.setupView()
         initMap()
-
     }
+
     private fun initMap() {
         mapFragment = activity?.supportFragmentManager
             ?.findFragmentById(R.id.map) as? SupportMapFragment
@@ -108,9 +106,6 @@ class MapFriendFragment : BaseFragment<FragmentMapFriendBinding>(), OnMapReadyCa
         }
     }
 
-    override fun setupEventControl() {
-        super.setupEventControl()
-    }
     private fun checkPermission(onSuccess: (() -> Unit)) {
         PermissionUtils.permission(*Constants.LOCATION_PER)
             .callback(object : PermissionUtils.FullCallback {
@@ -131,12 +126,12 @@ class MapFriendFragment : BaseFragment<FragmentMapFriendBinding>(), OnMapReadyCa
     private fun drawMarker() {
         val locations = mutableListOf<LatLng>()
         listUserLocation.forEach {
-            if (it?.userId == userLocationDTO?.userId){
+            if (it?.userId == userLocationDTO?.userId) {
                 val split = it?.coordinate?.split(",")
-                if ((split?.size ?: 0) >= 2){
-                    val lat = split?.get(0)?.toDouble()?:0.0
-                    val lon = split?.get(1)?.toDouble()?:0.0
-                    locations.add(LatLng(lat,lon))
+                if ((split?.size ?: 0) >= 2) {
+                    val lat = split?.get(0)?.toDouble() ?: 0.0
+                    val lon = split?.get(1)?.toDouble() ?: 0.0
+                    locations.add(LatLng(lat, lon))
                 }
             }
         }

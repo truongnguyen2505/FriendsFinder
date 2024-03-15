@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.finals.friendsfinder.R
 import com.finals.friendsfinder.bases.BaseFragment
 import com.finals.friendsfinder.databinding.FragmentMyQrBinding
+import com.finals.friendsfinder.models.BaseAccessToken
 import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.github.alexzhirkevich.customqrgenerator.QrData
@@ -51,9 +52,8 @@ class MyQRFragment : BaseFragment<FragmentMyQrBinding>() {
 
     override fun setupView() {
         super.setupView()
-        val userInfo = Utils.shared.getUser()
-        val phone = userInfo?.phoneNumber ?: ""
-        val data = QrData.Text(phone)
+        val currentIdUser = BaseAccessToken.accessToken
+        val data = QrData.Text(currentIdUser)
         val options = QrVectorOptions.Builder()
             .setPadding(.3f)
             .setLogo(

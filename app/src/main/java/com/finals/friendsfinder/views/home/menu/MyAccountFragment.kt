@@ -65,7 +65,9 @@ class MyAccountFragment : BaseFragment<FragmentMyAccountBinding>() {
                 activity?.supportFragmentManager?.popBackStack()
             }
             btnMap.clickWithDebounce {
-                activity?.addFragmentToBackstack(android.R.id.content,MapFriendFragment())
+                userLocationDTO?.let {
+                    activity?.addFragmentToBackstack(android.R.id.content,MapFriendFragment.newInstance(it))
+                }
             }
             btnBlock.clickWithDebounce {
                 showMessage(title = "Confirm",
