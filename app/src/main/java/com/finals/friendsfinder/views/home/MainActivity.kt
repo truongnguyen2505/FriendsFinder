@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.blankj.utilcode.util.PermissionUtils
 import com.finals.friendsfinder.R
@@ -32,6 +33,7 @@ import com.finals.friendsfinder.views.friends.data.Friends
 import com.finals.friendsfinder.views.friends.data.Location
 import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.finals.friendsfinder.views.friends.data.UserLocationDTO
+import com.finals.friendsfinder.views.home.menu.MyAccountFragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -158,8 +160,25 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                             createMarker(userLocationDTO.userName, userLocationDTO.isOnline)!!
                         )
                     )
+                    .title(userLocationDTO.userId)
                     .zIndex(zIndex)
             )
+            mMap?.setOnMarkerClickListener { marker ->
+                Log.d(TAG, "addMarkerMap: ")
+                val userInfo = listAllUser.find {
+                    it?.userId == marker.title
+                }
+                var user = UserLocationDTO(
+                    userInfo?.userId ?: "", userInfo?.userName ?: "", LatLng(
+                         0.0,
+                         0.0
+                    ), createAt = "",
+                    isOnline = userInfo?.online ?: "0","2"
+                )
+                val myAccountFragment = MyAccountFragment.newInstance(user)
+                addFragmentToBackstack(android.R.id.content, myAccountFragment)
+                return@setOnMarkerClickListener true
+            }
         }
     }
 
@@ -169,6 +188,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                 R.layout.layout_custom_marker,
                 null
             )
+        val clMarker = view.findViewById<ConstraintLayout>(R.id.clMarker)
         val tvName = view.findViewById<TextView>(R.id.tvUserName)
         val tvStatus = view.findViewById<TextView>(R.id.tvStatus)
         tvName.text = userName
@@ -356,6 +376,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), OnMapReadyCallback {
                     val split = location?.coordinate?.split(", ")
                     mListLocationDTO.add(
                         UserLocationDTO(
+                            userId = location?.userId ?: "",
                             userName = location?.userName ?: "",
                             location = LatLng(
                                 (split?.get(0)?.toDouble() ?: 0.0),

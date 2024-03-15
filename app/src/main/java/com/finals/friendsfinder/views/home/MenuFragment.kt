@@ -77,7 +77,7 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
             btnAccount.clickWithDebounce {
                 activity?.addFragmentToBackstack(
                     android.R.id.content,
-                    MyAccountFragment.newInstance()
+                    MyAccountFragment()
                 )
             }
             btnMyQr.clickWithDebounce {
