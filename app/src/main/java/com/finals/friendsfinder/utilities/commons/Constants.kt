@@ -80,6 +80,7 @@ enum class FriendKey(val key: String) {
 enum class MessageKey(val key: String) {
     MESSAGE_ID("messageId"),
     CREATE_AT("createAt"),
+    UPDATE_AT("update_at"),
     MESSAGE("message"),
     USER_ID("userId"),
     CONVERSATION_ID("conversationId")
@@ -87,10 +88,12 @@ enum class MessageKey(val key: String) {
 
 enum class ConversationKey(val key: String) {
     CONVERSATION_ID("conversationId"),
-    CONVERSATION_NAME("conversationName"),
+    CONVERSATION_NAME_FOR_RECEIVER("secondConversationName"),
     CREATE_AT("createAt"),
     CREATOR_ID("creatorId"),
-    TYPE_GROUP("type_group")
+    TYPE_GROUP("type_group"),
+    CONVERSATION_NAME_FOR_CREATOR("conversationName"),
+
 }
 
 enum class ParticipantKey(val key: String) {

@@ -12,6 +12,7 @@ import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.utilities.commons.TableKey
 import com.finals.friendsfinder.views.chatting.adapter.AllMessageAdapter
 import com.finals.friendsfinder.views.chatting.data.ConversationModel
+import com.finals.friendsfinder.views.chatting.data.ConversationModelDTO
 import com.finals.friendsfinder.views.chatting.data.ParticipantModel
 import com.finals.friendsfinder.views.friends.data.UserInfo
 import com.google.firebase.database.DataSnapshot
@@ -112,7 +113,7 @@ class AllMessageFragment : BaseFragment<FragmentAllMessageBinding>() {
 
     private fun checkCurrentConversation() {
         val currentIdUser = BaseAccessToken.accessToken
-        val listCurrentConversation: MutableList<ConversationModel> = mutableListOf()
+        val listCurrentConversation: MutableList<ConversationModelDTO> = mutableListOf()
         listConversation?.forEachIndexed { index, conversationModel ->
             listParticipant?.forEachIndexed { index, participantModel ->
                 if (conversationModel.conversationId.equals(
@@ -125,7 +126,14 @@ class AllMessageFragment : BaseFragment<FragmentAllMessageBinding>() {
                             true
                         ) || participantModel.userId.equals(currentIdUser, true)
                     ) {
-                        listCurrentConversation.add(conversationModel)
+                        val conv = ConversationModelDTO()
+                        conv.conversationId = conversationModel.conversationId
+                        conv.conversationName = conversationModel.conversationName
+                        conv.createAt = conversationModel.createAt
+                        conv.typeGroup = conversationModel.typeGroup
+                        conv.secondConversationName = conversationModel.secondConversationName
+                        conv.creatorId = conversationModel.creatorId
+                        listCurrentConversation.add(conv)
                     }
                 }
             }
@@ -139,8 +147,13 @@ class AllMessageFragment : BaseFragment<FragmentAllMessageBinding>() {
     }
 
     private fun setAdapter() {
-        allMessageAdapter = AllMessageAdapter(requireContext(), onItemClick = { convDTO ->
+        val currentIdUser = BaseAccessToken.accessToken
+        allMessageAdapter = AllMessageAdapter(requireContext(), currentIdUser, onItemClick = { convDTO ->
             // go to chatting
+            activity?.addFragmentToBackstack(
+                android.R.id.content,
+                ChatFragment.newInstance(convDTO)
+            )
         })
         rootView.rvListMessage.apply {
             layoutManager =

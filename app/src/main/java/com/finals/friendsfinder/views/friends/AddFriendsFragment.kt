@@ -60,7 +60,6 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
     private var listContact = listOf<UserDTO>()
     private var listConversation: MutableList<ConversationModel>? = null
     private var listParticipant: MutableList<ParticipantModel>? = null
-    //private var listMyConversation: MutableList<ConversationModel>? = null
 
     override fun observeHandle() {
         super.observeHandle()
@@ -487,8 +486,10 @@ class AddFriendsFragment : BaseFragment<FragmentAddFriendsBinding>() {
         val keyId = Utils.shared.autoGenerateId()
         val hasMap: HashMap<String, String> = HashMap()
         val currentTime = Utils.shared.getDateTimeNow()
+        val myInfo = Utils.shared.getUser()
         hasMap[ConversationKey.CONVERSATION_ID.key] = keyId
-        hasMap[ConversationKey.CONVERSATION_NAME.key] = userInfo?.get(0)?.userName ?: "AnyUser"
+        hasMap[ConversationKey.CONVERSATION_NAME_FOR_CREATOR.key] = userInfo?.get(0)?.userName ?: "AnyUser"
+        hasMap[ConversationKey.CONVERSATION_NAME_FOR_RECEIVER.key] = myInfo?.userName ?: "AnyUser"
         hasMap[ConversationKey.CREATOR_ID.key] = BaseAccessToken.accessToken
         hasMap[ConversationKey.CREATE_AT.key] = currentTime
 

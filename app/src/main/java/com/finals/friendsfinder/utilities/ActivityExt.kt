@@ -239,3 +239,17 @@ fun Activity.showKeyboard(view: View) {
     val imm =this.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT or InputMethodManager.SHOW_FORCED)
 }
+
+inline fun <reified AV> FragmentActivity.showActivity(
+    goRoot: Boolean = false,
+    enter: Int = R.anim.enter_from_right,
+    exit: Int = R.anim.exit_to_left
+) {
+    val intent = Intent(this, AV::class.java)
+    startActivity(intent)
+    if (goRoot)
+        finishAffinity()
+    else
+        finish()
+    overridePendingTransition(enter, exit)
+}

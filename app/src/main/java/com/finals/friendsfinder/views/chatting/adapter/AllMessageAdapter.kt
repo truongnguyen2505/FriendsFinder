@@ -9,14 +9,16 @@ import com.finals.friendsfinder.databinding.ItemChattingBinding
 import com.finals.friendsfinder.utilities.Utils
 import com.finals.friendsfinder.utilities.clickWithDebounce
 import com.finals.friendsfinder.views.chatting.data.ConversationModel
+import com.finals.friendsfinder.views.chatting.data.ConversationModelDTO
 
 class AllMessageAdapter(
     private val context: Context,
-    private val onItemClick: ((ConversationModel) -> Unit)
+    private val currentUserId: String,
+    private val onItemClick: ((ConversationModelDTO) -> Unit)
 ) :
     RecyclerView.Adapter<AllMessageAdapter.AllMessageVH>() {
 
-    private val listConversation: MutableList<ConversationModel> = mutableListOf()
+    private val listConversation: MutableList<ConversationModelDTO> = mutableListOf()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -36,19 +38,21 @@ class AllMessageAdapter(
         return listConversation.size
     }
 
-    fun setList(newList: List<ConversationModel>) {
+    fun setList(newList: List<ConversationModelDTO>) {
         listConversation.clear()
         listConversation.addAll(newList)
         notifyDataSetChanged()
     }
 
     inner class AllMessageVH(binding: ItemChattingBinding) :
-        BaseViewHolder<ItemChattingBinding, MutableList<ConversationModel>>(binding) {
-        override fun bindData(data: MutableList<ConversationModel>, position: Int) {
+        BaseViewHolder<ItemChattingBinding, MutableList<ConversationModelDTO>>(binding) {
+        override fun bindData(data: MutableList<ConversationModelDTO>, position: Int) {
             super.bindData(data, position)
             val item = listConversation[position]
             with(binding) {
-                tvName.text = item.conversationName
+                tvName.text = if (currentUserId.equals(item.creatorId, true)){
+                    item.conversationName ?: "Anyone"
+                }else item.secondConversationName ?: "Anyone"
                 tvDesc.text = Utils.shared.convertStringDate(
                     oldFormat = "yyyy-MM-dd'T'hh:mm:ss.SSS'Z'",
                     newFormat = "dd-MM-yyyy HH:mm",
