@@ -13,7 +13,7 @@ class Constants {
         const val CURRENT_LANGUAGE: String = "CURRENT_LANGUAGE"
         const val EVENT_CHANGE_LANGUAGE: String = "event_change_language"
         const val CURRENT_USER: String = "CURRENT_USER"
-        const val TYPE_GROUP: String = "TYPE_GROUP"
+        const val TYPE_GROUP: String = "type_group"
 
         var isLockShowPopup: Boolean = false
 

@@ -1,76 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:clickable="true"
+    android:fillViewport="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/layoutHeader"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal"
-        android:paddingHorizontal="16dp">
+        android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btnBack"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/layoutHeader"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="2dp"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="12dp"
-            android:src="@drawable/ic_arrow_back_24" />
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            android:paddingHorizontal="16dp">
 
-        <FrameLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginHorizontal="4dp"
-            android:layout_weight="1"
-            android:layout_marginEnd="14dp"
-            android:background="@drawable/bg_edt_border_8_stroke_black">
-
-            <com.tcom.vn.customview.CustomEditTextFonts
-                android:id="@+id/edtSearch"
-                style="@style/Text.Regular"
-                android:layout_width="match_parent"
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/btnBack"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:hint="Search by name"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColorHint="@color/color_6F6D6D"
-                android:paddingHorizontal="8dp"
-                android:textColor="@color/black"
-                android:textSize="16sp" />
-        </FrameLayout>
-    </LinearLayout>
+                android:layout_gravity="center"
+                android:layout_marginStart="2dp"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="12dp"
+                android:src="@drawable/ic_arrow_back_24" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/rvSearch"
-        android:layout_below="@+id/layoutHeader"
-        tools:listitem="@layout/item_search_by_name"
-        android:layout_marginTop="8dp" />
+            <FrameLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginHorizontal="4dp"
+                android:layout_marginEnd="14dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_edt_border_8_stroke_black">
 
-    <com.finals.friendsfinder.customizes.CustomTextViewFonts
-        android:id="@+id/tvNoData"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="No data"
-        android:visibility="gone"
-        android:textSize="16sp"
-        android:layout_centerInParent="true"
-        android:gravity="center"
-        android:drawableTop="@drawable/ic_no_data"
-        android:drawablePadding="6dp"/>
+                <com.tcom.vn.customview.CustomEditTextFonts
+                    android:id="@+id/edtSearch"
+                    style="@style/Text.Regular"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:hint="Search by name"
+                    android:maxLines="1"
+                    android:paddingHorizontal="8dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/color_6F6D6D"
+                    android:textSize="16sp" />
+            </FrameLayout>
+        </LinearLayout>
 
-</RelativeLayout>
+        <com.finals.friendsfinder.customizes.CustomEditText
+            android:id="@+id/edtNameGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layoutHeader"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="24dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvParticipant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/edtNameGroup"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="12dp" />
+
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
+            android:id="@+id/btnCreate"
+            style="@style/StyleButtonBlack"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rvParticipant"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="24dp"
+            android:text="CREATE" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/layoutHeader"
+            android:layout_marginTop="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:background="@color/white"
+            android:visibility="gone"
+            tools:listitem="@layout/item_search_by_name" />
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
