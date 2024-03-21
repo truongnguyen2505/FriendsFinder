@@ -210,7 +210,7 @@ class CreateGroupFragment : BaseFragment<FragmentCreateGroupBinding>() {
         for (i in listItemGroup?.indices!!) {
             val keyId = Utils.shared.autoGenerateId()
             hasMap[ParticipantKey.USERID.key] = listItemGroup[i].userId
-            hasMap[ParticipantKey.PARTICIPANT_ID.key] = convId
+            hasMap[ParticipantKey.PARTICIPANT_ID.key] = keyId
             dbReference.child(keyId).setValue(hasMap)
         }
     }

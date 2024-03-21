@@ -16,13 +16,27 @@
             android:id="@+id/imgAvatar"
             android:layout_marginEnd="12dp" />
 
+
+        <com.finals.friendsfinder.customizes.CustomTextViewFonts
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Text.Regular"
+            tools:text="Truong"
+            android:textSize="12sp"
+            android:id="@+id/tvNameUserChat"
+            android:padding="4dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@+id/imgAvatar"
+            android:textColor="@color/color_6F6D6D"/>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:orientation="vertical"
             android:background="@drawable/bg_iten_chat_right"
             android:padding="8dp"
             android:layout_toStartOf="@+id/imgAvatar"
-            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tvNameUserChat"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="12dp"
             android:layout_height="wrap_content">

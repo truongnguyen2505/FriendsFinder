@@ -32,9 +32,14 @@ class ChatFragment : BaseFragment<ActivityChatBinding>() {
 
     companion object {
         private const val CONVERSATION = "CONVERSATION"
-        fun newInstance(conversation: ConversationModelDTO): ChatFragment {
+        private const val LIST_USER = "LIST_USER"
+        fun newInstance(
+            conversation: ConversationModelDTO,
+            listUser: ArrayList<UserInfo>
+        ): ChatFragment {
             val arg = Bundle().apply {
                 putParcelable(CONVERSATION, conversation)
+                putParcelableArrayList(LIST_USER, listUser)
             }
             return ChatFragment().apply {
                 arguments = arg
@@ -45,15 +50,18 @@ class ChatFragment : BaseFragment<ActivityChatBinding>() {
     private var dbReference: DatabaseReference? = null
     private var chatAdapter: ChatAdapter? = null
     private var mConversation: ConversationModelDTO? = null
+    private var mListUser: List<UserInfo> = listOf()
 
     override fun observeHandle() {
         super.observeHandle()
         val currentIdUser = BaseAccessToken.accessToken
         arguments?.let {
             mConversation = it.getParcelable(CONVERSATION)
-            rootView.layoutHeader.tvMessage.text = if (currentIdUser.equals(mConversation?.creatorId, true)){
-                mConversation?.conversationName ?: "Anyone"
-            }else mConversation?.secondConversationName ?: "Anyone"
+            mListUser = it.getParcelableArrayList(LIST_USER) ?: listOf()
+            rootView.layoutHeader.tvMessage.text =
+                if (currentIdUser.equals(mConversation?.creatorId, true)) {
+                    mConversation?.conversationName ?: "Anyone"
+                } else mConversation?.secondConversationName ?: "Anyone"
         }
     }
 
@@ -65,7 +73,8 @@ class ChatFragment : BaseFragment<ActivityChatBinding>() {
     }
 
     private fun setAdapter() {
-        chatAdapter = ChatAdapter(requireContext())
+        val myInfo = Utils.shared.getUser()
+        chatAdapter = ChatAdapter(requireContext(), mListUser ?: listOf(), myInfo?.userName ?: "")
         rootView.rvChatting.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

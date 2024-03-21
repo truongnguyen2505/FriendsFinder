@@ -152,7 +152,7 @@ class AllMessageFragment : BaseFragment<FragmentAllMessageBinding>() {
             // go to chatting
             activity?.addFragmentToBackstack(
                 android.R.id.content,
-                ChatFragment.newInstance(convDTO)
+                ChatFragment.newInstance(convDTO, ArrayList(currentListUser))
             )
         })
         rootView.rvListMessage.apply {
