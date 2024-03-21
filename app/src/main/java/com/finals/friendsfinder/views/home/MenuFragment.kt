@@ -74,12 +74,12 @@ class MenuFragment : BaseFragment<FragmentMenuBinding>() {
             btnSetting.clickWithDebounce {
                 activity?.addFragmentToBackstack(android.R.id.content, SettingProfile.newInstance())
             }
-            btnAccount.clickWithDebounce {
-                activity?.addFragmentToBackstack(
-                    android.R.id.content,
-                    MyAccountFragment()
-                )
-            }
+//            btnAccount.clickWithDebounce {
+//                activity?.addFragmentToBackstack(
+//                    android.R.id.content,
+//                    MyAccountFragment()
+//                )
+//            }
             btnMyQr.clickWithDebounce {
                 activity?.addFragmentToBackstack(android.R.id.content, MyQRFragment.newInstance())
             }
